@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{# input: mezzoList - array of mezzo #}
+
+{% block body %}
+
+<table>
+  <tr>
+    <td width="200px">
+      <center>
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/icon-home.svg') }}" 
+	       alt="icon-home" height="96" width="96"></a>
+      </center>
+    </td>
+  </tr>
+  <tr>
+    <td><center><a href="{{ path('homepage') }}">Pagina principale</a></center></td>
+  </tr>
+</table>
+
+<table id="atable">
+  <thead>
+    <tr>
+        <td>Id</td>
+        <td>Targa</td>
+        <td>Codice</td>
+        <td>Sigla</td>
+        <td>Altro</td>
+    </tr>
+  </thead>
+  <tbody>
+  {% for mezzo in mezzoList %}
+    <tr>
+        <td>{{ mezzo.id }}</td>
+        <td>{{ mezzo.targa }}</td>
+        <td>{{ mezzo.codice }}</td>
+        <td>{{ mezzo.sigla }}</td>
+        <td>{{ mezzo.altro }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

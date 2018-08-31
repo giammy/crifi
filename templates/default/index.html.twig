@@ -3,53 +3,63 @@
 {% block body %}
 
 <table>
-<tr>
-<td width="200px">
-<center>
-  <a href="{{ path('homepage') }}">
-       <img src="{{ asset('assets/images/icon-nuovo-intervento.png') }}" 
-	    alt="icon-nuovo-intervento" height="96" width="96"></a>
-</center>
-</td>
-<td width="200px"><center>
-  <a href="{{ path('homepage') }}">
-       <img src="{{ asset('assets/images/icon-nuovo-intervento.png') }}" 
-	    alt="icon-nuovo-intervento" height="96" width="96"></a>
-</center>
-</td>
-<td width="200px"><center>
-  <a href="{{ path('homepage') }}">
-       <img src="{{ asset('assets/images/icon-print.svg') }}" 
-	    alt="icon-print" height="96" width="96"></a>
-</center>
-</td>
-</tr>
-<tr>
-<td><center>
-  <a href="{{ path('nuovoIntervento') }}">
-       Nuova Uscita</a>
-</center>
-</td>
-<td><center>
-  <a href="{{ path('nuovoIntervento') }}">
-       Equipaggio</a>
-</center>
-</td>
-<td><center>
-  <a href="{{ path('nuovoIntervento') }}">
-       Stampa</a>
-</center>
-</td>
-
-</tr>
+  <tr>
+    <td width="200px">
+      <center>
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/icon-nuovo-intervento.png') }}" 
+	       alt="icon-nuovo-intervento" height="96" width="96"></a>
+      </center>
+    </td>
+    <td width="200px">
+      <center>
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/icon-print.svg') }}" 
+	       alt="icon-print" height="96" width="96"></a>
+      </center>
+    </td>
+    <td width="200px">
+      <center>
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/icon-persone.svg') }}" 
+	       alt="icon-persone" height="96" width="96"></a>
+      </center>
+    </td>
+  </tr>
+  <tr>
+    <td><center><a href="{{ path('homepage') }}">Nuova Uscita</a></center></td>
+    <td><center><a href="{{ path('homepage') }}">Stampa</a></center></td>
+    <td><center><a href="{{ path('homepage') }}">Equipaggio</a></center></td>
+  </tr>
 </table>
 
-  <hr>
+<hr>
+<hr>
 
-  <h1>INTERVENTI IN CORSO</h1>
+<center><h1>INTERVENTI IN CORSO</h1></center>
 
-  <hr>
+<hr>
+<hr>
 
-  <h1>STORICO INTERVENTI</h1>
+<center><h1>STORICO INTERVENTI</h1></center>
+
+<hr>
+<hr>
+
+<div align="right">
+  |||||||
+  <a href="{{ path('mostramezzo') }}">Gestione Mezzi</a>
+  |||||||
+  <a href="{{ path('mostrapersona') }}">Gestione Persone</a>
+  |||||||
+</div>
+
+<hr>
+<hr>
+
+<center>
+<a href="https://github.com/giammy/crifi">CRI.F.I.</a> - 
+Progetto disponibile come "GNU General Public License v3.0"
+</center>
 
 {% endblock %}

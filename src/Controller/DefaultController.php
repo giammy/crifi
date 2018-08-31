@@ -40,7 +40,7 @@ class DefaultController extends AbstractController
 
 
     /**
-     * @Route("/show/mezzo")
+     * @Route("/admin/mostra/mezzo", name="mostramezzo")
      */
     public function showMezzo(LoggerInterface $logger)
     {
@@ -52,14 +52,14 @@ class DefaultController extends AbstractController
 
 //echo("<pre>"); var_dump($mezzoList); exit;
 
-        return $this->render('default/showMezzo.html.twig', [
+        return $this->render('default/mostraMezzo.html.twig', [
             'mezzoList' => $mezzoList,
         ]);
 
     }
 
     /**
-      * @Route("/show/persona")
+      * @Route("/admin/mostra/persona", name="mostrapersona")
       */
     public function showPersona(LoggerInterface $logger)
     {
@@ -71,7 +71,7 @@ class DefaultController extends AbstractController
 
 //echo("<pre>"); var_dump($personaList); exit;
 
-        return $this->render('default/showPersona.html.twig', [
+        return $this->render('default/mostraPersona.html.twig', [
             'personaList' => $personaList,
         ]);
 

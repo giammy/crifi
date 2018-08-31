@@ -4,15 +4,30 @@
 
 {% block body %}
 
+<table>
+  <tr>
+    <td width="200px">
+      <center>
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/icon-home.svg') }}" 
+	       alt="icon-home" height="96" width="96"></a>
+      </center>
+    </td>
+  </tr>
+  <tr>
+    <td><center><a href="{{ path('homepage') }}">Pagina principale</a></center></td>
+  </tr>
+</table>
+
 <table id="atable">
   <thead>
     <tr>
-        <td>id</td>
-        <td>nome</td>
-        <td>cognome</td>
-        <td>codice fiscale</td>
-	<td>codice CRI</td>
-        <td>altro</td>
+        <td>Id</td>
+        <td>Nome</td>
+        <td>Cognome</td>
+        <td>Codice fiscale</td>
+	<td>Codice CRI</td>
+        <td>Altro</td>
     </tr>
   </thead>
   <tbody>
