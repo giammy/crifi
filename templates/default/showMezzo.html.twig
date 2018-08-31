@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{# input: mezzoList - array of mezzo #}
+
+{% block body %}
+
+<table id="atable">
+  <thead>
+    <tr>
+        <td>id</td>
+        <td>targa</td>
+        <td>codice</td>
+        <td>sigla</td>
+        <td>altro</td>
+    </tr>
+  </thead>
+  <tbody>
+  {% for mezzo in mezzoList %}
+    <tr>
+        <td>{{ mezzo.id }}</td>
+        <td>{{ mezzo.targa }}</td>
+        <td>{{ mezzo.codice }}</td>
+        <td>{{ mezzo.sigla }}</td>
+        <td>{{ mezzo.altro }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

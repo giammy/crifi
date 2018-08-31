@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{# input: personaList - array of persona #}
+
+{% block body %}
+
+<table id="atable">
+  <thead>
+    <tr>
+        <td>id</td>
+        <td>nome</td>
+        <td>cognome</td>
+        <td>codice fiscale</td>
+	<td>codice CRI</td>
+        <td>altro</td>
+    </tr>
+  </thead>
+  <tbody>
+  {% for persona in personaList %}
+    <tr>
+        <td>{{ persona.id }}</td>
+        <td>{{ persona.nome }}</td>
+        <td>{{ persona.cognome }}</td>
+        <td>{{ persona.codiceFiscale }}</td>
+        <td>{{ persona.codiceCRI }}</td>
+        <td>{{ persona.altro }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
