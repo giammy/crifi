@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+  <head>
 
         <script type="text/javascript" src="{{ asset('assets/js/jquery-3.1.0.min.js') }}"></script>
         <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css">   
@@ -29,28 +29,30 @@
 
     </script>
 
-    </head>
-    <body>
+  </head>
+  <body>
 
-  <div id="wrapper">
-    <div align="left">
-      <a href="{{ path('homepage') }}">
-        <img src="{{ asset('assets/images/logo1.png') }}"
+    <div id="wrapper">
+      <div align="left">
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/logo1.png') }}"
            alt="LOGO1"
            height="96" width="400"
            style="margin-left:20px;margin-right:20px;margin-top:20px;margin-bottom:20px;float:left">
         </a>
-{#
-      <a href="{{ path('homepage') }}">
-        <img src="{{ asset('assets/images/logo2.png') }}" alt="LOGO2"
-           style="margin-left:20px;margin-right:20px;margin-top:20px;margin-bottom:20px;float:left">
-      </a>
-#}
+      </div>
     </div>
-  </div>
 
+    {% block body %}{% endblock %}
+    {% block javascripts %}{% endblock %}
 
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+    <hr>
+    <hr>
+
+    <center>
+    <a href="https://github.com/giammy/crifi">CRI.F.I.</a> - 
+    Progetto disponibile come "GNU General Public License v3.0" - <a href="http://giammy.com">Gianluca Moro</a>
+    </center>
+
+  </body>
 </html>
