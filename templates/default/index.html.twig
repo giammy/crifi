@@ -1,5 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Hello {{ name }}</h1>
+
+<table>
+<tr>
+<td width="200px">
+<center>
+  <a href="{{ path('homepage') }}">
+       <img src="{{ asset('assets/images/icon-nuovo-intervento.png') }}" 
+	    alt="icon-nuovo-intervento" height="96" width="96"></a>
+</center>
+</td>
+<td width="200px"><center>
+  <a href="{{ path('homepage') }}">
+       <img src="{{ asset('assets/images/icon-nuovo-intervento.png') }}" 
+	    alt="icon-nuovo-intervento" height="96" width="96"></a>
+</center>
+</td>
+<td width="200px"><center>
+  <a href="{{ path('homepage') }}">
+       <img src="{{ asset('assets/images/icon-print.svg') }}" 
+	    alt="icon-print" height="96" width="96"></a>
+</center>
+</td>
+</tr>
+<tr>
+<td><center>
+  <a href="{{ path('nuovoIntervento') }}">
+       Nuova Uscita</a>
+</center>
+</td>
+<td><center>
+  <a href="{{ path('nuovoIntervento') }}">
+       Equipaggio</a>
+</center>
+</td>
+<td><center>
+  <a href="{{ path('nuovoIntervento') }}">
+       Stampa</a>
+</center>
+</td>
+
+</tr>
+</table>
+
+  <hr>
+
+  <h1>INTERVENTI IN CORSO</h1>
+
+  <hr>
+
+  <h1>STORICO INTERVENTI</h1>
+
 {% endblock %}

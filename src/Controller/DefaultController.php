@@ -28,6 +28,18 @@ class DefaultController extends AbstractController
 
 
     /**
+     * @Route("/nuovo/intervento", name="nuovoIntervento"))
+     */
+    public function nuovoIntervento()
+    {
+        return $this->render('default/editIntervento.html.twig', [
+            'name' => "HOMEPAGE",
+        ]);
+    }
+
+
+
+    /**
      * @Route("/show/mezzo")
      */
     public function showMezzo(LoggerInterface $logger)
