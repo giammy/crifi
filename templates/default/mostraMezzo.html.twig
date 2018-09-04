@@ -22,6 +22,8 @@
 <table id="atable">
   <thead>
     <tr>
+        <td></td>
+        <td></td>
         <td>Id</td>
         <td>Targa</td>
         <td>Codice</td>
@@ -32,6 +34,8 @@
   <tbody>
   {% for mezzo in mezzoList %}
     <tr>
+        <td></td>
+	<td><a href="{{ path('adminmodificamezzo', { 'id':mezzo.id } ) }}">EDIT</a></td>
         <td>{{ mezzo.id }}</td>
         <td>{{ mezzo.targa }}</td>
         <td>{{ mezzo.codice }}</td>
@@ -41,5 +45,7 @@
   {% endfor %}
   </tbody>
 </table>
+
+<a href="{{ path('adminmodificamezzo', { 'id':null } ) }}">NUOVO MEZZO</a>
 
 {% endblock %}

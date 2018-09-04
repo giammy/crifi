@@ -6,7 +6,10 @@ namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Mezzo;
 use App\Entity\Persona;
@@ -74,6 +77,63 @@ class DefaultController extends AbstractController
         return $this->render('default/mostraPersona.html.twig', [
             'personaList' => $personaList,
         ]);
+
+    }
+
+    /**
+      * @Route("/admin/modifica/mezzo/{id}", name="adminmodificamezzo")
+      */
+    public function modificaMezzo(Request $request, LoggerInterface $logger, $id=null)
+    {
+        $logger->info("show persona");
+
+	if (is_null($id)) {
+	    // crea un nuovo mezzo
+	    $mezzo = new Mezzo();
+	} else {
+            $mezzo = $this->getDoctrine()
+                ->getRepository(Mezzo::class)
+                ->find($id);
+        }
+	if (is_null($mezzo)) {
+	    // crea un nuovo mezzo
+	    $mezzo = new Mezzo();	    
+	}
+
+	$form = $this->createFormBuilder();
+	$form = $form->add('targa', TextType::class);
+	$form = $form->add('codice', TextType::class);
+	$form = $form->add('sigla', TextType::class);
+	$form = $form->add('altro', TextType::class);
+	$form = $form->add('save', SubmitType::class, array('label' => 'Nuovo mezzo'));
+	$form = $form->getForm();
+	$form->handleRequest($request);
+
+	if ($form->isSubmitted() && $form->isValid()) {
+	    $data = $form->getData();
+	    $mezzo->setTarga($data['targa']);
+	    $mezzo->setCodice($data['codice']);
+	    $mezzo->setSigla($data['sigla']);
+	    $mezzo->setAltro($data['altro']);
+	    $em = $this->getDoctrine()->getManager();
+	    $em->persist($mezzo);
+	    $em->flush();
+
+	    return $this->redirectToRoute('mostramezzo');
+	}
+        return $this->render('default/adminModificaMezzo.html.twig', array(
+            'form' => $form->createView(),
+	    'mezzo' => $mezzo,
+	    ));
+    }
+
+    /**
+      * @Route("/admin/modifica/persona", name="modificapersona")
+      */
+    public function modificaPersona(LoggerInterface $logger)
+    {
+
+//TODO
 
     }
 
