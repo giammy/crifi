@@ -22,6 +22,8 @@
 <table id="atable">
   <thead>
     <tr>
+        <td></td>
+        <td></td>
         <td>Id</td>
         <td>Nome</td>
         <td>Cognome</td>
@@ -33,6 +35,13 @@
   <tbody>
   {% for persona in personaList %}
     <tr>
+        <td><center><a href="{{ path('admincancellapersona', { 'id':persona.id } ) }}"
+                       onclick="return confirm('\nATTENZIONE:\nVUOI ELIMINARE QUESTA PERSONA?')">
+          <img src="{{ asset('assets/images/icon-delete.svg') }}" 
+	       alt="icon-home" height="32" width="32"></a></canter></td>
+	<td><center><a href="{{ path('adminmodificapersona', { 'id':persona.id } ) }}">
+          <img src="{{ asset('assets/images/icon-edit.svg') }}" 
+	       alt="icon-home" height="32" width="32"></a></center></td>
         <td>{{ persona.id }}</td>
         <td>{{ persona.nome }}</td>
         <td>{{ persona.cognome }}</td>
@@ -43,5 +52,11 @@
   {% endfor %}
   </tbody>
 </table>
+
+<p>
+
+<div align="right">
+  <a href="{{ path('adminmodificapersona', { 'id':null } ) }}">AGGIUNGI PERSONA</a>
+</div>
 
 {% endblock %}

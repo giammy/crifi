@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# {{ form_widget(form) }} #}
+
+{{ form_start(form) }}
+<h2>
+<table>
+
+  <tr>
+    <td>{{ form_label(form.nome) }}</td>
+    <td>{{ form_errors(form.nome) }}</td>
+    <td>{{ form_widget(form.nome, { 'value': persona.nome } ) }}</td>
+    <td>{{ form_help(form.nome) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.cognome) }}</td>
+    <td>{{ form_errors(form.cognome) }}</td>
+    <td>{{ form_widget(form.cognome, { 'value': persona.cognome } ) }}</td>
+    <td>{{ form_help(form.cognome) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.codiceFiscale) }}</td>
+    <td>{{ form_errors(form.codiceFiscale) }}</td>
+    <td>{{ form_widget(form.codiceFiscale, { 'value': persona.codiceFiscale } ) }}</td>
+    <td>{{ form_help(form.codiceFiscale) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.codiceCRI) }}</td>
+    <td>{{ form_errors(form.codiceCRI) }}</td>
+    <td>{{ form_widget(form.codiceCRI, { 'value': persona.codiceCRI } ) }}</td>
+    <td>{{ form_help(form.codiceCRI) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.altro) }}</td>
+    <td>{{ form_errors(form.altro) }}</td>
+    <td>{{ form_widget(form.altro, { 'value': persona.altro } ) }}</td>
+    <td>{{ form_help(form.altro) }}</td>
+  </tr>
+</h2>
+</table>
+
+{{ form_end(form) }}
+
+{% endblock %}

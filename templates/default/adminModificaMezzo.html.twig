@@ -2,11 +2,42 @@
 
 {% block body %}
 
-{{ form_widget(form) }}
+{# {{ form_widget(form) }} #}
 
-{#
 {{ form_start(form) }}
+<h2>
+<table>
+
+  <tr>
+    <td>{{ form_label(form.targa) }}</td>
+    <td>{{ form_errors(form.targa) }}</td>
+    <td>{{ form_widget(form.targa, { 'value': mezzo.targa } ) }}</td>
+    <td>{{ form_help(form.targa) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.codice) }}</td>
+    <td>{{ form_errors(form.codice) }}</td>
+    <td>{{ form_widget(form.codice, { 'value': mezzo.codice } ) }}</td>
+    <td>{{ form_help(form.codice) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.sigla) }}</td>
+    <td>{{ form_errors(form.sigla) }}</td>
+    <td>{{ form_widget(form.sigla, { 'value': mezzo.sigla } ) }}</td>
+    <td>{{ form_help(form.sigla) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.altro) }}</td>
+    <td>{{ form_errors(form.altro) }}</td>
+    <td>{{ form_widget(form.altro, { 'value': mezzo.altro } ) }}</td>
+    <td>{{ form_help(form.altro) }}</td>
+  </tr>
+</h2>
+</table>
+
 {{ form_end(form) }}
-#}
 
 {% endblock %}

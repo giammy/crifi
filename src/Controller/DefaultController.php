@@ -81,11 +81,26 @@ class DefaultController extends AbstractController
     }
 
     /**
+      * @Route("/admin/cancella/mezzo/{id}", name="admincancellamezzo")
+      */
+    public function cancellaMezzo(Request $request, LoggerInterface $logger, $id=null)
+    {
+        $logger->info("cancella mezzo");
+        $mezzo = $this->getDoctrine()
+                ->getRepository(Mezzo::class)
+                ->find($id);
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($mezzo);
+        $em->flush();
+        return $this->redirectToRoute('mostramezzo');
+    }
+
+    /**
       * @Route("/admin/modifica/mezzo/{id}", name="adminmodificamezzo")
       */
     public function modificaMezzo(Request $request, LoggerInterface $logger, $id=null)
     {
-        $logger->info("show persona");
+        $logger->info("modifica mezzo");
 
 	if (is_null($id)) {
 	    // crea un nuovo mezzo
@@ -104,8 +119,10 @@ class DefaultController extends AbstractController
 	$form = $form->add('targa', TextType::class);
 	$form = $form->add('codice', TextType::class);
 	$form = $form->add('sigla', TextType::class);
-	$form = $form->add('altro', TextType::class);
-	$form = $form->add('save', SubmitType::class, array('label' => 'Nuovo mezzo'));
+	$form = $form->add('altro', TextType::class, array(
+    	      'required'   => false,
+	      ));
+	$form = $form->add('save', SubmitType::class, array('label' => 'SALVA'));
 	$form = $form->getForm();
 	$form->handleRequest($request);
 
@@ -128,13 +145,69 @@ class DefaultController extends AbstractController
     }
 
     /**
-      * @Route("/admin/modifica/persona", name="modificapersona")
+      * @Route("/admin/cancella/persona/{id}", name="admincancellapersona")
       */
-    public function modificaPersona(LoggerInterface $logger)
+    public function cancellaPersona(Request $request, LoggerInterface $logger, $id=null)
     {
+        $logger->info("cancella persona");
+        $persona = $this->getDoctrine()
+                ->getRepository(Persona::class)
+                ->find($id);
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($persona);
+        $em->flush();
+        return $this->redirectToRoute('mostrapersona');
+    }
 
-//TODO
+    /**
+      * @Route("/admin/modifica/persona/{id}", name="adminmodificapersona")
+      */
+    public function modificaPersona(Request $request, LoggerInterface $logger, $id=null)
+    {
+        $logger->info("modifica persona");
 
+	if (is_null($id)) {
+	    // crea un nuova persona
+	    $persona = new Persona();
+	} else {
+            $persona = $this->getDoctrine()
+                ->getRepository(Persona::class)
+                ->find($id);
+        }
+	if (is_null($persona)) {
+	    // crea un nuova persona
+	    $persona = new Persona();	    
+	}
+
+	$form = $this->createFormBuilder();
+	$form = $form->add('nome', TextType::class);
+	$form = $form->add('cognome', TextType::class);
+	$form = $form->add('codiceFiscale', TextType::class);
+	$form = $form->add('codiceCRI', TextType::class);
+	$form = $form->add('altro', TextType::class, array(
+    	      'required'   => false,
+	      ));
+	$form = $form->add('save', SubmitType::class, array('label' => 'SALVA'));
+	$form = $form->getForm();
+	$form->handleRequest($request);
+
+	if ($form->isSubmitted() && $form->isValid()) {
+	    $data = $form->getData();
+	    $persona->setNome($data['nome']);
+	    $persona->setCognome($data['cognome']);
+	    $persona->setCodiceFiscale($data['codiceFiscale']);
+	    $persona->setCodiceCRI($data['codiceCRI']);
+	    $persona->setAltro($data['altro']);
+	    $em = $this->getDoctrine()->getManager();
+	    $em->persist($persona);
+	    $em->flush();
+
+	    return $this->redirectToRoute('mostrapersona');
+	}
+        return $this->render('default/adminModificaPersona.html.twig', array(
+            'form' => $form->createView(),
+	    'persona' => $persona,
+	    ));
     }
 
     /**

@@ -34,8 +34,13 @@
   <tbody>
   {% for mezzo in mezzoList %}
     <tr>
-        <td></td>
-	<td><a href="{{ path('adminmodificamezzo', { 'id':mezzo.id } ) }}">EDIT</a></td>
+        <td><center><a href="{{ path('admincancellamezzo', { 'id':mezzo.id } ) }}"
+                       onclick="return confirm('\nATTENZIONE:\nVUOI ELIMINARE QUESTO MEZZO?')">
+          <img src="{{ asset('assets/images/icon-delete.svg') }}" 
+	       alt="icon-home" height="32" width="32"></a></canter></td>
+	<td><center><a href="{{ path('adminmodificamezzo', { 'id':mezzo.id } ) }}">
+          <img src="{{ asset('assets/images/icon-edit.svg') }}" 
+	       alt="icon-home" height="32" width="32"></a></center></td>
         <td>{{ mezzo.id }}</td>
         <td>{{ mezzo.targa }}</td>
         <td>{{ mezzo.codice }}</td>
@@ -46,6 +51,10 @@
   </tbody>
 </table>
 
-<a href="{{ path('adminmodificamezzo', { 'id':null } ) }}">NUOVO MEZZO</a>
+<p>
+
+<div align="right">
+  <a href="{{ path('adminmodificamezzo', { 'id':null } ) }}">AGGIUNGI MEZZO</a>
+</div>
 
 {% endblock %}
