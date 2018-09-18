@@ -43,6 +43,11 @@ class Persona
      */
     private $altro;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $listaQualifiche = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Persona
     public function setAltro(?string $altro): self
     {
         $this->altro = $altro;
+
+        return $this;
+    }
+
+    public function getListaQualifiche(): ?array
+    {
+        return $this->listaQualifiche;
+    }
+
+    public function setListaQualifiche(?array $listaQualifiche): self
+    {
+        $this->listaQualifiche = $listaQualifiche;
 
         return $this;
     }

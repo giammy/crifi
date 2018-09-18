@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{# input: equipaggioList - array of equipaggio #}
+
+{% block body %}
+
+<table>
+  <tr>
+    <td width="200px">
+      <center>
+        <a href="{{ path('homepage') }}">
+          <img src="{{ asset('assets/images/icon-home.svg') }}" 
+	       alt="icon-home" height="96" width="96"></a>
+      </center>
+    </td>
+  </tr>
+  <tr>
+    <td><center><a href="{{ path('homepage') }}">Pagina principale</a></center></td>
+  </tr>
+</table>
+
+<table id="atable">
+  <thead>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>id</td>
+        <td>Mezzo</td>
+        <td>F.V.</td>
+        <td>Note</td>
+	<td>Inizio</td>
+        <td>Fine</td>
+        <td>Persone</td>
+    </tr>
+  </thead>
+  <tbody>
+  {% for equipaggio in equipaggioList %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td>{{ equipaggio.id }}</td>
+        <td>{{ equipaggio.idMezzo }}</td>
+        <td>{{ equipaggio.numeroTurno }}</td>
+        <td>{{ equipaggio.note }}</td>
+        <td>{{ equipaggio.inizio|date("Y/m/d h:m:s") }}</td>
+        <td>{{ equipaggio.fine|date("Y/m/d h:m:s") }}</td>
+        <td>
+	  {% for x in equipaggio.idPersonaABCTLista %}
+	    {{x[0]}} - {{x[1]}} - {{x[2]}} - {{x[3]}}
+          {% endfor %}
+        </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<p>
+
+{% endblock %}

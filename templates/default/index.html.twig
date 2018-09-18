@@ -22,38 +22,74 @@
 	<a href="{{ path('homepage') }}">Stampa</a>
       </center>
     </td>
-    <td width="20%"></td>
     <td width="20%">
       <center>
-        <a href="{{ path('homepage') }}">
+	{% if e is null %}
+        <a href="{{ path('modificaequipaggio') }}">
           <img src="{{ asset('assets/images/icon-persone.svg') }}" 
 	       alt="icon-persone" height="96" width="96"></a>
         <br>
-	<a href="{{ path('homepage') }}">Equipaggio</a>
+	<a href="{{ path('modificaequipaggio') }}">INIZIA TURNO</a>
+        {% elseif e.fine is null %}
+        <a href="{{ path('modificaequipaggio') }}">
+          <img src="{{ asset('assets/images/icon-persone.svg') }}" 
+	       alt="icon-persone" height="96" width="96"></a>
+        <br>
+	<a href="{{ path('modificaequipaggio') }}">FINE TURNO</a>
+        {% else %}
+        <a href="{{ path('modificaequipaggio') }}">
+          <img src="{{ asset('assets/images/icon-persone.svg') }}" 
+	       alt="icon-persone" height="96" width="96"></a>
+        <br>
+	<a href="{{ path('modificaequipaggio') }}">INIZIA TURNO</a>
+	{% endif %}
       </center>
     </td>
-    <td>
+    <td width="20%">
+      <center>
+	{% if e is not null %}
+	  <a href="{{ path('modificaequipaggio', { 'id':e.id } ) }}">
+	{% else %}
+          <a href="{{ path('modificaequipaggio') }}">
+	{% endif %}
+          <img src="{{ asset('assets/images/icon-persone.svg') }}" 
+	       alt="icon-persone" height="96" width="96"></a>
+        <br>
+	{% if e is not null %}
+	  <a href="{{ path('modificaequipaggio', { 'id':e.id } ) }}">Equipaggio</a>
+        {% else %}
+	  <a href="{{ path('modificaequipaggio') }}">Equipaggio</a>
+	{% endif %}
+      </center>
+    </td>
+    <td width="20%">
       <table>
 	<tr>
-          <td>Mezzo</td>
-          <td>Persona1 A C</td>
+	  <td><font color="silver">F.V.</font></td>
+          <td><font color="silver">Mezzo</font></td>
+          <td><font color="silver">Quando</font></td>
+          <td><font color="silver">Tipo</font></td>
+	  <td><font color="silver">Inizio</font></td>
+	  <td><font color="silver">Fine</font></td>
         </tr>
 	<tr>
-	  <td>F.V.</td>
-	  <td>Persona2 </td>
-	</tr>
+	  <td>{{ e.numeroTurno|default("-") }}</td>
+          <td>{{ m.sigla|default("-") }}</td>
+          <td>{{ e.quando|default("-") }}</td>
+          <td>{{ e.tipo|default("-") }}</td>
+	  <td>{% if e is not null %}{{ e.inizio|date("Y/m/d h:m:s") }}{% endif %}</td>
+	  <td>{% if e is not null %}{% if e.fine is not null %}{{ e.fine|date("Y/m/d h:m:s") }}{% endif %}{% endif %}</td>
+        </tr>
 	<tr>
-          <td>Mat/Pom/Not</td>
-	  <td>Persona3 </td>
-	</tr>
-	<tr>
-          <td>118/Trasp/Man</td>
-	  <td>Persona4 </td>
+	  {% if e is not null %}
+	    {% for x in e.idPersonaABCTLista %}
+	      <td>{{x[0]}} - {{x[1]}} - {{x[2]}} - {{x[3]}}</td>
+	    {% endfor %}
+	  {% endif %}
 	</tr>
         <tr> 
-	  <td>Inizio</td>
-	  <td>Fine</td>
-	</tr>
+	  <td><font color="silver">Note:</font>{{ e.note|default("") }}</td>
+        </tr>
       </table>
     </td>
   </tr>

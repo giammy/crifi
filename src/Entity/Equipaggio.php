@@ -29,69 +29,34 @@ class Equipaggio
     private $numeroTurno;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=1024, nullable=true)
      */
-    private $idPersona;
+    private $note;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="json")
      */
-    private $idPersona1;
+    private $idPersonaABCTLista = [];
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetimetz", nullable=true)
      */
-    private $isAutista1;
+    private $inizio;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetimetz", nullable=true)
      */
-    private $isCapoEquipaggio1;
+    private $fine;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $idPersona2;
+    private $tipo;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $isAutista2;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isCapoEquipaggio2;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $idPersona3;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isAutista3;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isCapoEquipaggio3;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $idPersona4;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isAutista4;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isCapoEquipaggio4;
+    private $quando;
 
     public function getId(): ?int
     {
@@ -122,158 +87,74 @@ class Equipaggio
         return $this;
     }
 
-    public function getIdPersona(): ?int
+    public function getNote(): ?string
     {
-        return $this->idPersona;
+        return $this->note;
     }
 
-    public function setIdPersona(int $idPersona): self
+    public function setNote(?string $note): self
     {
-        $this->idPersona = $idPersona;
+        $this->note = $note;
 
         return $this;
     }
 
-    public function getIdPersona1(): ?int
+    public function getIdPersonaABCTLista(): ?array
     {
-        return $this->idPersona1;
+        return $this->idPersonaABCTLista;
     }
 
-    public function setIdPersona1(int $idPersona1): self
+    public function setIdPersonaABCTLista(array $idPersonaABCTLista): self
     {
-        $this->idPersona1 = $idPersona1;
+        $this->idPersonaABCTLista = $idPersonaABCTLista;
 
         return $this;
     }
 
-    public function getIsAutista1(): ?bool
+    public function getInizio(): ?\DateTimeInterface
     {
-        return $this->isAutista1;
+        return $this->inizio;
     }
 
-    public function setIsAutista1(bool $isAutista1): self
+    public function setInizio(\DateTimeInterface $inizio): self
     {
-        $this->isAutista1 = $isAutista1;
+        $this->inizio = $inizio;
 
         return $this;
     }
 
-    public function getIsCapoEquipaggio1(): ?bool
+    public function getFine(): ?\DateTimeInterface
     {
-        return $this->isCapoEquipaggio1;
+        return $this->fine;
     }
 
-    public function setIsCapoEquipaggio1(bool $isCapoEquipaggio1): self
+    public function setFine(?\DateTimeInterface $fine): self
     {
-        $this->isCapoEquipaggio1 = $isCapoEquipaggio1;
+        $this->fine = $fine;
 
         return $this;
     }
 
-    public function getIdPersona2(): ?int
+    public function getTipo(): ?string
     {
-        return $this->idPersona2;
+        return $this->tipo;
     }
 
-    public function setIdPersona2(int $idPersona2): self
+    public function setTipo(?string $tipo): self
     {
-        $this->idPersona2 = $idPersona2;
+        $this->tipo = $tipo;
 
         return $this;
     }
 
-    public function getIsAutista2(): ?bool
+    public function getQuando(): ?string
     {
-        return $this->isAutista2;
+        return $this->quando;
     }
 
-    public function setIsAutista2(bool $isAutista2): self
+    public function setQuando(?string $quando): self
     {
-        $this->isAutista2 = $isAutista2;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio2(): ?bool
-    {
-        return $this->isCapoEquipaggio2;
-    }
-
-    public function setIsCapoEquipaggio2(bool $isCapoEquipaggio2): self
-    {
-        $this->isCapoEquipaggio2 = $isCapoEquipaggio2;
-
-        return $this;
-    }
-
-    public function getIdPersona3(): ?int
-    {
-        return $this->idPersona3;
-    }
-
-    public function setIdPersona3(int $idPersona3): self
-    {
-        $this->idPersona3 = $idPersona3;
-
-        return $this;
-    }
-
-    public function getIsAutista3(): ?bool
-    {
-        return $this->isAutista3;
-    }
-
-    public function setIsAutista3(bool $isAutista3): self
-    {
-        $this->isAutista3 = $isAutista3;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio3(): ?bool
-    {
-        return $this->isCapoEquipaggio3;
-    }
-
-    public function setIsCapoEquipaggio3(bool $isCapoEquipaggio3): self
-    {
-        $this->isCapoEquipaggio3 = $isCapoEquipaggio3;
-
-        return $this;
-    }
-
-    public function getIdPersona4(): ?int
-    {
-        return $this->idPersona4;
-    }
-
-    public function setIdPersona4(?int $idPersona4): self
-    {
-        $this->idPersona4 = $idPersona4;
-
-        return $this;
-    }
-
-    public function getIsAutista4(): ?bool
-    {
-        return $this->isAutista4;
-    }
-
-    public function setIsAutista4(?bool $isAutista4): self
-    {
-        $this->isAutista4 = $isAutista4;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio4(): ?bool
-    {
-        return $this->isCapoEquipaggio4;
-    }
-
-    public function setIsCapoEquipaggio4(?bool $isCapoEquipaggio4): self
-    {
-        $this->isCapoEquipaggio4 = $isCapoEquipaggio4;
+        $this->quando = $quando;
 
         return $this;
     }

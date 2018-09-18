@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# {{ form_widget(form) }} #}
+
+{{ form_start(form) }}
+<h2>
+<table>
+
+  <tr>
+    <td>{{ form_label(form.idMezzo) }}</td>
+    <td>{{ form_errors(form.idMezzo) }}</td>
+    <td>{{ form_widget(form.idMezzo, { 'value': equipaggio.idMezzo } ) }}</td>
+    <td>{{ form_help(form.idMezzo) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.numeroTurno) }}</td>
+    <td>{{ form_errors(form.numeroTurno) }}</td>
+    <td>{{ form_widget(form.numeroTurno, { 'value': equipaggio.numeroTurno } ) }}</td>
+    <td>{{ form_help(form.numeroTurno) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.tipo) }}</td>
+    <td>{{ form_errors(form.tipo) }}</td>
+    <td>{{ form_widget(form.tipo, { 'value': equipaggio.tipo } ) }}</td>
+    <td>{{ form_help(form.tipo) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.quando) }}</td>
+    <td>{{ form_errors(form.quando) }}</td>
+    <td>{{ form_widget(form.quando, { 'value': equipaggio.quando } ) }}</td>
+    <td>{{ form_help(form.quando) }}</td>
+  </tr>
+
+
+  <tr>
+    <td>{{ form_label(form.note) }}</td>
+    <td>{{ form_errors(form.note) }}</td>
+    <td>{{ form_widget(form.note, { 'value': equipaggio.note } ) }}</td>
+    <td>{{ form_help(form.note) }}</td>
+  </tr>
+
+
+</h2>
+</table>
+
+{{ form_end(form) }}
+
+<h5>
+-{{ equipaggio.id }}-
+</h5>
+
+{% endblock %}
