@@ -11,7 +11,7 @@
   <tr>
     <td>{{ form_label(form.idMezzo) }}</td>
     <td>{{ form_errors(form.idMezzo) }}</td>
-    <td>{{ form_widget(form.idMezzo, { 'value': equipaggio.idMezzo } ) }}</td>
+    <td>{{ form_widget(form.idMezzo) }}</td>
     <td>{{ form_help(form.idMezzo) }}</td>
   </tr>
 
@@ -36,6 +36,142 @@
     <td>{{ form_help(form.quando) }}</td>
   </tr>
 
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+
+    <td></td>
+    <td>Autista</td>
+    <td></td>
+
+    <td></td>
+    <td>Capoequipaggio</td>
+    <td></td>
+
+    <td></td>
+    <td>BLSD</td>
+    <td></td>
+
+    <td></td>
+    <td>Tirocinante</td>
+    <td></td>
+  </tr>
+
+
+  <tr>
+    <td>{{ form_label(form.persona0) }}</td>
+    <td>{{ form_errors(form.persona0) }}</td>
+    <td>{{ form_widget(form.persona0) }}</td>
+    <td>{{ form_help(form.persona0) }}</td>
+
+
+    <td>{{ form_errors(form.autista0) }}</td>
+    <td><center>{{ form_widget(form.autista0) }}</center></td>
+    <td>{{ form_help(form.autista0) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio0) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio0) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio0) }}</td>
+
+
+    <td>{{ form_errors(form.blsd0) }}</td>
+    <td><center>{{ form_widget(form.blsd0) }}</center></td>
+    <td>{{ form_help(form.blsd0) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante0) }}</td>
+    <td><center>{{ form_widget(form.tirocinante0) }}</center></td>
+    <td>{{ form_help(form.tirocinante0) }}</td>
+
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.persona1) }}</td>
+    <td>{{ form_errors(form.persona1) }}</td>
+    <td>{{ form_widget(form.persona1) }}</td>
+    <td>{{ form_help(form.persona1) }}</td>
+
+
+    <td>{{ form_errors(form.autista1) }}</td>
+    <td><center>{{ form_widget(form.autista1) }}</center></td>
+    <td>{{ form_help(form.autista1) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio1) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio1) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio1) }}</td>
+
+
+    <td>{{ form_errors(form.blsd1) }}</td>
+    <td><center>{{ form_widget(form.blsd1) }}</center></td>
+    <td>{{ form_help(form.blsd1) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante1) }}</td>
+    <td><center>{{ form_widget(form.tirocinante1) }}</center></td>
+    <td>{{ form_help(form.tirocinante1) }}</td>
+
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.persona2) }}</td>
+    <td>{{ form_errors(form.persona2) }}</td>
+    <td>{{ form_widget(form.persona2) }}</td>
+    <td>{{ form_help(form.persona2) }}</td>
+
+
+    <td>{{ form_errors(form.autista2) }}</td>
+    <td><center>{{ form_widget(form.autista2) }}</center></td>
+    <td>{{ form_help(form.autista2) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio2) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio2) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio2) }}</td>
+
+
+    <td>{{ form_errors(form.blsd2) }}</td>
+    <td><center>{{ form_widget(form.blsd2) }}</center></td>
+    <td>{{ form_help(form.blsd2) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante2) }}</td>
+    <td><center>{{ form_widget(form.tirocinante2) }}</center></td>
+    <td>{{ form_help(form.tirocinante2) }}</td>
+
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.persona3) }}</td>
+    <td>{{ form_errors(form.persona3) }}</td>
+    <td>{{ form_widget(form.persona3) }}</td>
+    <td>{{ form_help(form.persona3) }}</td>
+
+
+    <td>{{ form_errors(form.autista3) }}</td>
+    <td><center>{{ form_widget(form.autista3) }}</center></td>
+    <td>{{ form_help(form.autista3) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio3) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio3) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio3) }}</td>
+
+
+    <td>{{ form_errors(form.blsd3) }}</td>
+    <td><center>{{ form_widget(form.blsd3) }}</center></td>
+    <td>{{ form_help(form.blsd3) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante3) }}</td>
+    <td><center>{{ form_widget(form.tirocinante3) }}</center></td>
+    <td>{{ form_help(form.tirocinante3) }}</td>
+
+  </tr>
+
 
   <tr>
     <td>{{ form_label(form.note) }}</td>
@@ -50,8 +186,6 @@
 
 {{ form_end(form) }}
 
-<h5>
--{{ equipaggio.id }}-
-</h5>
+<h5>-{{ equipaggio.id }}-</h5>
 
 {% endblock %}

@@ -36,14 +36,17 @@
   <tbody>
   {% for equipaggio in equipaggioList %}
     <tr>
-        <td></td>
+        <td><center><a href="{{ path('admincancellaequipaggio', { 'id':equipaggio.id } ) }}"
+                       onclick="return confirm('\nATTENZIONE:\nVUOI ELIMINARE QUESTO TURNO?')">
+          <img src="{{ asset('assets/images/icon-delete.svg') }}" 
+	       alt="icon-home" height="32" width="32"></a></center></td>
         <td></td>
         <td>{{ equipaggio.id }}</td>
         <td>{{ equipaggio.idMezzo }}</td>
         <td>{{ equipaggio.numeroTurno }}</td>
         <td>{{ equipaggio.note }}</td>
-        <td>{{ equipaggio.inizio|date("Y/m/d h:m:s") }}</td>
-        <td>{{ equipaggio.fine|date("Y/m/d h:m:s") }}</td>
+        <td>{{ equipaggio.inizio|date("Y/m/d G:i:s") }}</td>
+        <td>{{ equipaggio.fine|date("Y/m/d G:i:s") }}</td>
         <td>
 	  {% for x in equipaggio.idPersonaABCTLista %}
 	    {{x[0]}} - {{x[1]}} - {{x[2]}} - {{x[3]}}

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 //use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -34,7 +35,18 @@ class DefaultController extends AbstractController
             ->getRepository(Mezzo::class)
             ->findAll();
         $assoc_arr = array_reduce($l, function ($result, $item) {
-          $result[$item->getTarga()] = $item->getId();
+          $result[$item->getSigla() . " - " . $item->getTarga()] = $item->getId();
+          return $result;
+        }, array());
+        return($assoc_arr);
+    }
+
+    function getListaPersoneAsDescId() {
+        $l = $this->getDoctrine()
+            ->getRepository(Persona::class)
+            ->findAll();
+        $assoc_arr = array_reduce($l, function ($result, $item) {
+          $result[$item->getCognome() . " " . $item->getNome()] = $item->getId();
           return $result;
         }, array());
         return($assoc_arr);
@@ -45,13 +57,22 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        $e = $this->getUltimoEquipaggio();
+        $equi = $this->getUltimoEquipaggio();
+//echo("<pre>"); var_dump($equi->getInizio()); exit;
+	$repoP = $this->getDoctrine()->getRepository(Persona::class);
         return $this->render('default/index.html.twig', [
             'name' => "HOMEPAGE",
-	    'e' => $e,
-	    'm' => $this->getDoctrine()
-            ->getRepository(Mezzo::class)
-            ->find($e->getIdMezzo()),
+	    'equi' => $equi,
+	    'm' => is_null($equi)?null:$this->getDoctrine()->getRepository(Mezzo::class)->find($equi->getIdMezzo()),
+	    'listaPersone' => array_map(function ($x) use ($repoP) { 
+	           $p = $repoP->find($x[0]);
+		   if (is_null($p)) {
+		     $cognomeNome = "";
+		   } else {
+		     $cognomeNome = $p->getCognome() . " " . $p->getNome();
+		   }
+	    	   return([$cognomeNome, $x[1], $x[2], $x[3], $x[4]]); 
+	    }, is_null($equi)?[]:$equi->getIdPersonaABCTLista()),
         ]);
     }
 
@@ -126,6 +147,21 @@ class DefaultController extends AbstractController
     }
 
     /**
+      * @Route("/admin/cancella/equipaggio/{id}", name="admincancellaequipaggio")
+      */
+    public function cancellaEquipaggio(Request $request, LoggerInterface $logger, $id=null)
+    {
+        $logger->info("cancella equipaggio");
+        $equipaggio = $this->getDoctrine()
+                ->getRepository(Equipaggio::class)
+                ->find($id);
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($equipaggio);
+        $em->flush();
+        return $this->redirectToRoute('mostraequipaggio');
+    }
+
+    /**
       * @Route("/admin/cancella/mezzo/{id}", name="admincancellamezzo")
       */
     public function cancellaMezzo(Request $request, LoggerInterface $logger, $id=null)
@@ -141,55 +177,88 @@ class DefaultController extends AbstractController
     }
 
     /**
-      * @Route("/modifica/equipaggio/{id}", name="modificaequipaggio")
+      * @Route("/modifica/equipaggio/start", name="modificaequipaggiostart")
       */
-    public function modificaEquipaggio(Request $request, LoggerInterface $logger, $id=null)
+    public function modificaEquipaggioStart(Request $request, LoggerInterface $logger)
+    {
+        $logger->info("modifica equipaggio start");
+	$ultimoEquipaggio = $this->getUltimoEquipaggio();
+	$equipaggio = new Equipaggio();
+	$equipaggio->setInizio(new \DateTime('now'));
+	$equipaggio->setFine(null);
+	$equipaggio->setNote(null);	 
+	$equipaggio->setTipo("S");
+	$equipaggio->setQuando("N");
+	$equipaggio->setIdPersonaABCTLista([]);
+	if (is_null($ultimoEquipaggio)) {
+            // nessun equipaggio presente - inizializzane uno di nuovo
+	    $equipaggio->setIdMezzo(0);
+	    $equipaggio->setNumeroTurno(1);
+	} else {
+	    $equipaggio->setIdMezzo($ultimoEquipaggio->getIdMezzo());
+	    $equipaggio->setNumeroTurno($ultimoEquipaggio->getNumeroTurno() + 1);
+ 	}
+	$em = $this->getDoctrine()->getManager();
+	$em->persist($equipaggio);
+	$em->flush();
+	$id = $equipaggio->getId();
+//echo("<pre>"); var_dump($equipaggio); exit;
+	return $this->redirectToRoute('modificaequipaggioint', array('id' => $id));
+    }
+
+    /**
+      * @Route("/modifica/equipaggio/stop/{id}", name="modificaequipaggiostop")
+      */
+    public function modificaEquipaggioStop(Request $request, LoggerInterface $logger, $id)
+    {
+        $logger->info("modifica equipaggio stop");
+        $equipaggio = $this->getDoctrine()
+            ->getRepository(Equipaggio::class)
+            ->find($id);
+	if (is_null($equipaggio)) {
+	    return $this->redirectToRoute('homepage');
+	} 
+	$equipaggio->setFine(new \DateTime('now'));
+	$em = $this->getDoctrine()->getManager();
+	$em->persist($equipaggio);
+	$em->flush();
+	return $this->redirectToRoute('homepage');
+    }
+
+    /**
+      * @Route("/modifica/equipaggio/edit/{id}", name="modificaequipaggioedit")
+      */
+    public function modificaEquipaggioEdit(Request $request, LoggerInterface $logger, $id)
+    {
+        $logger->info("modifica equipaggio edit");
+        $equipaggio = $this->getDoctrine()
+            ->getRepository(Equipaggio::class)
+            ->find($id);
+	if (is_null($equipaggio)) {
+	    return $this->redirectToRoute('homepage');
+	} 
+	return $this->redirectToRoute('modificaequipaggioint', array('id' => $id));
+    }
+
+    /**
+      * @Route("/modifica/equipaggio/int/{id}", name="modificaequipaggioint")
+      */
+    public function modificaEquipaggioInt(Request $request, LoggerInterface $logger, $id)
     {
         $logger->info("modifica equipaggio");
 
-	if (is_null($id)) {
-            // cerca ultimo equipaggio
-	    $equipaggio = $this->getUltimoEquipaggio();
-	} else {
-            $equipaggio = $this->getDoctrine()
-                ->getRepository(Equipaggio::class)
-                ->find($id);
-	}
+        $equipaggio = $this->getDoctrine()
+            ->getRepository(Equipaggio::class)
+            ->find($id);
 
-	if (is_null($equipaggio)) {
-            // nessun equipaggio presente - inizializzane uno di nuovo
-	    $equipaggio = new Equipaggio();
-	    $equipaggio->setIdMezzo(0);
-	    $equipaggio->setNumeroTurno(1);
-	    $equipaggio->setTipo("S");
-	    $equipaggio->setQuando("N");
-	    $equipaggio->setIdPersonaABCTLista([]);
-	    $equipaggio->setInizio(new \DateTime('NOW'));
-	    $equipaggio->setFine(null);
-	    $equipaggio->setNote(null);
-	} else {
-	    if (!is_null($equipaggio->getFine())) {
-	        $oldIdMezzo = $equipaggio->getIdMezzo();
-	        $oldNumeroTurno = $equipaggio->getNumeroTurno();
-	        $equipaggio = new Equipaggio();
-	        $equipaggio->setIdMezzo($oldIdMezzo);
-	        $equipaggio->setNumeroTurno($oldNumeroTurno + 1);
-	        $equipaggio->setIdPersonaABCTLista([]);
-	        $equipaggio->setTipo("S");
-	        $equipaggio->setQuando("N");
-	        $equipaggio->setInizio(new DateTime('now'));
-	        $equipaggio->setFine(null);
-		$equipaggio->setNote(null);
-	    }
-	}
+//echo("<pre>"); var_dump($equipaggio); exit;
 
 	$form = $this->createFormBuilder();
-
-	$theChoices = $this->getListaMezziAsDescId();
 	$form = $form->add('idMezzo', ChoiceType::class, array(
 	  'expanded' => false,
 	  'multiple' => false,
-	  'choices' => $theChoices,	
+	  'choices' => $this->getListaMezziAsDescId(),
+          'data' => $equipaggio->getIdMezzo(),
 	));
 	$form = $form->add('numeroTurno', TextType::class);
 	$form = $form->add('tipo', ChoiceType::class, array(
@@ -199,6 +268,7 @@ class DefaultController extends AbstractController
 	      'SUEM' => 'S',
 	      'Altro' => 'x',
 	      ),
+          'data' => $equipaggio->getTipo(),
           ));
 	$form = $form->add('quando', ChoiceType::class, array(
 	  'expanded' => false,
@@ -208,26 +278,64 @@ class DefaultController extends AbstractController
 	    'Pomeriggio' => 'P',
 	    'Notte' => 'N',
 	  ),
+          'data' => $equipaggio->getQuando(),
   	));
-	$form = $form->add('note', TextType::class);
+	$form = $form->add('note', TextType::class, array(
+	       	    'required'    => false,
+	));
 
-//TODO
+        // persone 
+	$listaPersoneAsDescId = $this->getListaPersoneAsDescId();
+	for ($i=0; $i<4; $i++) {
+	    $form = $form->add('persona' . $i, ChoiceType::class, array_merge(array(
+	      'expanded' => false,
+	      'multiple' => false,
+	      'choices' => $listaPersoneAsDescId,
+              ), empty($equipaggio->getIdPersonaABCTLista())?[]:
+                array('data' => $equipaggio->getIdPersonaABCTLista()[$i][0]))
+	    );
+
+	    $form = $form->add('autista' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($equipaggio->getIdPersonaABCTLista())?false:$equipaggio->getIdPersonaABCTLista()[$i][1],
+	       	  'required'    => false));
+	    $form = $form->add('blsd' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($equipaggio->getIdPersonaABCTLista())?false:$equipaggio->getIdPersonaABCTLista()[$i][2],
+	    	  'required'    => false));
+	    $form = $form->add('capoequipaggio' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($equipaggio->getIdPersonaABCTLista())?false:$equipaggio->getIdPersonaABCTLista()[$i][3],
+	    	  'required'    => false));
+	    $form = $form->add('tirocinante' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($equipaggio->getIdPersonaABCTLista())?false:$equipaggio->getIdPersonaABCTLista()[$i][4],
+	    	  'required'    => false));
+
+	}
 
 	$form = $form->add('save', SubmitType::class, array('label' => 'SALVA'));
 	$form = $form->getForm();
 	$form->handleRequest($request);
 
-
 	if ($form->isSubmitted() && $form->isValid()) {
 	    $data = $form->getData();
+//echo("<pre>"); var_dump($data); exit;
 	    $equipaggio->setIdMezzo($data['idMezzo']);
 	    $equipaggio->setNumeroTurno($data['numeroTurno']);
 	    $equipaggio->setTipo($data['tipo']);
 	    $equipaggio->setQuando($data['quando']);
 	    $equipaggio->setNote($data['note']);
+
+	    $equipaggio->setIdPersonaABCTLista([
+	      [$data['persona0'], $data['autista0'], $data['blsd0'], $data['capoequipaggio0'], $data['tirocinante0']],
+	      [$data['persona1'], $data['autista1'], $data['blsd1'], $data['capoequipaggio1'], $data['tirocinante1']],
+	      [$data['persona2'], $data['autista2'], $data['blsd2'], $data['capoequipaggio2'], $data['tirocinante2']],
+	      [$data['persona3'], $data['autista3'], $data['blsd3'], $data['capoequipaggio3'], $data['tirocinante3']],
+	    ]);
+
 	    $em = $this->getDoctrine()->getManager();
 	    $em->persist($equipaggio);
 	    $em->flush();
+
+//echo("<pre>"); var_dump($equipaggio); exit;
+
 	    return $this->redirectToRoute('homepage');
 	}
         return $this->render('default/modificaEquipaggio.html.twig', array(

@@ -24,73 +24,83 @@
     </td>
     <td width="20%">
       <center>
-	{% if e is null %}
-        <a href="{{ path('modificaequipaggio') }}">
+	{% if equi is null %}
+        <a href="{{ path('modificaequipaggiostart') }}">
           <img src="{{ asset('assets/images/icon-persone.svg') }}" 
 	       alt="icon-persone" height="96" width="96"></a>
         <br>
-	<a href="{{ path('modificaequipaggio') }}">INIZIA TURNO</a>
-        {% elseif e.fine is null %}
-        <a href="{{ path('modificaequipaggio') }}">
+	<a href="{{ path('modificaequipaggiostart', { 'id': equi.id|default(0)} ) }}">INIZIA TURNO</a>
+        {% elseif equi.fine is null %}
+        <a href="{{ path('modificaequipaggiostop', { 'id': equi.id} ) }}">
           <img src="{{ asset('assets/images/icon-persone.svg') }}" 
 	       alt="icon-persone" height="96" width="96"></a>
         <br>
-	<a href="{{ path('modificaequipaggio') }}">FINE TURNO</a>
+	<a href="{{ path('modificaequipaggiostop', { 'id': equi.id} ) }}">FINE TURNO</a>
         {% else %}
-        <a href="{{ path('modificaequipaggio') }}">
+        <a href="{{ path('modificaequipaggiostart') }}">
           <img src="{{ asset('assets/images/icon-persone.svg') }}" 
 	       alt="icon-persone" height="96" width="96"></a>
         <br>
-	<a href="{{ path('modificaequipaggio') }}">INIZIA TURNO</a>
+	<a href="{{ path('modificaequipaggiostart', { 'id': equi.id|default(0) } ) }}">INIZIA TURNO</a>
 	{% endif %}
       </center>
     </td>
     <td width="20%">
       <center>
-	{% if e is not null %}
-	  <a href="{{ path('modificaequipaggio', { 'id':e.id } ) }}">
-	{% else %}
-          <a href="{{ path('modificaequipaggio') }}">
-	{% endif %}
-          <img src="{{ asset('assets/images/icon-persone.svg') }}" 
+	{% if equi is not null %}
+	  <a href="{{ path('modificaequipaggioedit', { 'id':equi.id } ) }}">
+          <img src="{{ asset('assets/images/icon-edit.svg') }}" 
 	       alt="icon-persone" height="96" width="96"></a>
-        <br>
-	{% if e is not null %}
-	  <a href="{{ path('modificaequipaggio', { 'id':e.id } ) }}">Equipaggio</a>
-        {% else %}
-	  <a href="{{ path('modificaequipaggio') }}">Equipaggio</a>
+          <br>
+	  <a href="{{ path('modificaequipaggioedit', { 'id':equi.id } ) }}">Equipaggio</a>
 	{% endif %}
       </center>
     </td>
     <td width="20%">
+      {% if equi is not null %}
+      {# date("Y/m/d G:i:s") #}
       <table>
 	<tr>
-	  <td><font color="silver">F.V.</font></td>
-          <td><font color="silver">Mezzo</font></td>
-          <td><font color="silver">Quando</font></td>
-          <td><font color="silver">Tipo</font></td>
-	  <td><font color="silver">Inizio</font></td>
-	  <td><font color="silver">Fine</font></td>
+	  <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+	  <td colspan="2">{{ equi.inizio|date("d/m/Y", "Europe/Rome") }}</td>
         </tr>
 	<tr>
-	  <td>{{ e.numeroTurno|default("-") }}</td>
-          <td>{{ m.sigla|default("-") }}</td>
-          <td>{{ e.quando|default("-") }}</td>
-          <td>{{ e.tipo|default("-") }}</td>
-	  <td>{% if e is not null %}{{ e.inizio|date("Y/m/d h:m:s") }}{% endif %}</td>
-	  <td>{% if e is not null %}{% if e.fine is not null %}{{ e.fine|date("Y/m/d h:m:s") }}{% endif %}{% endif %}</td>
+	  <td width="70px"><font color="silver"><center>F.V.</center></font></td>
+          <td width="70px"><font color="silver"><center>Mezzo</center></font></td>
+          <td width="70px"><font color="silver"><center>Quando</center></font></td>
+          <td width="70px"><font color="silver"><center>Tipo</center></font></td>
+	  <td width="70px"><font color="silver"><center>Inizio</center></font></td>
+	  <td width="70px"><font color="silver"><center>Fine</center></font></td>
         </tr>
 	<tr>
-	  {% if e is not null %}
-	    {% for x in e.idPersonaABCTLista %}
-	      <td>{{x[0]}} - {{x[1]}} - {{x[2]}} - {{x[3]}}</td>
+	  <td><center>{{ equi.numeroTurno|default("-") }}</center></td>
+          <td><center>{{ m.sigla|default("-") }}</center></td>
+          <td><center>{% if equi.quando == "M" %}     Mattina
+              {% elseif equi.quando == "P" %} Pomeriggio
+              {% else %}                      Notte {% endif %}</center></td>
+          <td><center>{% if equi.tipo == "S" %} SUEM {% else %} altro {% endif %}<center></td>
+	  <td><center>{{ equi.inizio|date("G:i", "Europe/Rome") }}</center></td>
+	  <td><center>{% if equi.fine is not null %}{{ equi.fine|date("G:i","Europe/Rome") }}{% endif %}</center></td>
+        </tr>
+	    {% for x in listaPersone %}
+	      <tr>
+                <td colspan="6">
+	          {{x[0]}} 
+		  {% if x[1] %} (Autista) {% endif %}
+		  {% if x[2] %} (BLSD) {% endif %}
+		  {% if x[3] %} (CapoE.) {% endif %}
+		  {% if x[4] %} (Tiroc.) {% endif %}
+                </td>
+	      </tr>
 	    {% endfor %}
-	  {% endif %}
-	</tr>
         <tr> 
-	  <td><font color="silver">Note:</font>{{ e.note|default("") }}</td>
+	  <td><font color="silver">Note:</font>{{ equi.note|default("") }}</td>
         </tr>
       </table>
+      {% endif %}
     </td>
   </tr>
 </table>
