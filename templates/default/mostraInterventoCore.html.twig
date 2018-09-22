@@ -1,0 +1,50 @@
+
+{% if tag=='atable' %}
+<table id={{tag}}>
+{% else %}
+<table width='100%'>
+{% endif %}
+  <thead>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Id</td>
+        <td>Mezzo</td>
+        <td>Km Partenza</td>
+        <td>Km Arrivo</td>
+        <td>F.V.</td>
+	<td>F.I.</td>
+        <td>/x</td>
+        <td><center>Tipo</center></td>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in lista %}
+    <tr>
+        <td>
+	  {% if tag=='atable' %}
+	    <center><a href="{{ path('cancellaintervento', { 'id':item.id } ) }}"
+                       onclick="return confirm('\nATTENZIONE:\nVUOI ELIMINARE QUESTO INTERVENTO?')">
+            <img src="{{ asset('assets/images/icon-delete.svg') }}" 
+	         alt="icon-delete" height="32" width="32"></a></center>
+	  {% else %}
+	    <center><a href="{{ path('archiviaintervento', { 'id':item.id } ) }}">
+            <img src="{{ asset('assets/images/icon-down-arrow.svg') }}" 
+	         alt="icon-down-arrow" height="32" width="32"></a></center>
+          {% endif %}
+	</td>
+	<td><center><a href="{{ path('modificaintervento', { 'id':item.id } ) }}">
+          <img src="{{ asset('assets/images/icon-edit.svg') }}" 
+	       alt="icon-edit" height="32" width="32"></a></center></td>
+        <td>{{ item.id }}</td>
+        <td>{# item.idMezzo #}{{ listaMezzi[loop.index0]}}</td>
+        <td>{{ item.kmPartenza }}</td>
+        <td>{{ item.kmArrivo }}</td>
+        <td>{{ item.numeroTurno }}</td>
+        <td>{{ item.numeroIntervento }}</td>
+        <td>{{ item.numeroInterventoBis }}</td>
+        <td><center>{% if item.tipoServizio == "S" %} SUEM {% else %} altro {% endif %}<center></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

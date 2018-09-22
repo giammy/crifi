@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -26,7 +30,13 @@ class DefaultController extends AbstractController
         $last = $this->getDoctrine()
             ->getRepository(Equipaggio::class)
             ->findOneBy(array(), array("id" => "DESC"));
-//var_dump($last); exit;
+        return $last;
+    }
+
+    function getUltimoIntervento() {
+        $last = $this->getDoctrine()
+            ->getRepository(Intervento::class)
+            ->findOneBy(array(), array("id" => "DESC"));
         return $last;
     }
 
@@ -49,7 +59,15 @@ class DefaultController extends AbstractController
           $result[$item->getCognome() . " " . $item->getNome()] = $item->getId();
           return $result;
         }, array());
+	$assoc_arr["-"] = 0;
         return($assoc_arr);
+    }
+
+    function getMezzoDisplayName($id) {
+        $x = $this->getDoctrine()
+            ->getRepository(Mezzo::class)
+            ->find($id);
+	return is_null($x)?"":$x->getSigla();
     }
 
     /**
@@ -60,8 +78,20 @@ class DefaultController extends AbstractController
         $equi = $this->getUltimoEquipaggio();
 //echo("<pre>"); var_dump($equi->getInizio()); exit;
 	$repoP = $this->getDoctrine()->getRepository(Persona::class);
+	$repoI = $this->getDoctrine()->getRepository(Intervento::class);
+	$listaCorrenti = $repoI->findBy(array('isCompletato' => false));
+	$listaStorico = $repoI->findBy(array('isCompletato' => true));
+
+//echo("<pre>"); var_dump($listaCorrenti); exit;
+
         return $this->render('default/index.html.twig', [
             'name' => "HOMEPAGE",
+	    'listaCorrenti' => $listaCorrenti,
+	    'listaStorico' => $listaStorico,
+	    'listaMezziCorrenti' => array_map(function($x) { 
+	        return $this->getMezzoDisplayName($x->getIdMezzo()); }, $listaCorrenti),
+	    'listaMezziStorico' => array_map(function($x) { 
+	        return $this->getMezzoDisplayName($x->getIdMezzo()); }, $listaStorico),
 	    'equi' => $equi,
 	    'm' => is_null($equi)?null:$this->getDoctrine()->getRepository(Mezzo::class)->find($equi->getIdMezzo()),
 	    'listaPersone' => array_map(function ($x) use ($repoP) { 
@@ -459,64 +489,285 @@ class DefaultController extends AbstractController
 	    ));
     }
 
+    function creaNuovointervento() {
+        $equi = $this->getUltimoEquipaggio();
+        $inte = $this->getUltimoIntervento();
+
+        $intervento = new Intervento();
+	$intervento->setIdMezzo($equi->getIdMezzo());
+	$intervento->setNumeroTurno($equi->getNumeroTurno());
+	$intervento->setTipoServizio($equi->getTipo());
+	$intervento->setIdPersonaABCTLista($equi->getIdPersonaABCTLista());
+	$intervento->setNumeroIntervento(is_null($inte)?1:$inte->getNumeroIntervento() + 1);
+	$intervento->setKmPartenza(is_null($inte)?1:$inte->getKmArrivo());
+
+        // date
+	$intervento->setDateLista([new \DateTime('now'), null, null, null, null, null ]);
+
+	return $intervento;
+    }
+
     /**
-      * @Route("/crea")
+      * @Route("/modifica/intervento/{id}", name="modificaintervento")
       */
-    public function crea(LoggerInterface $logger)
+    public function modificaIntervento(Request $request, LoggerInterface $logger, $id=null)
     {
-        $logger->info("Crea db entries");
-	$entityManager = $this->getDoctrine()->getManager();
+        $logger->info("modifica intervento");
 
-	$mezzo = new Mezzo();
-	$mezzo->setTarga("CRI12345");
-	$mezzo->setCodice("PD351234");
-	$mezzo->setSigla("R12");
-	$mezzo->setAltro("");
-        $entityManager->persist($mezzo);
-	$entityManager->flush();
+	if (is_null($id)) {
+	    $intervento = $this->creaNuovoIntervento();	
+	} else {
+            $intervento = $this->getDoctrine()
+                ->getRepository(Intervento::class)
+                ->find($id);		
+        }
+	if (is_null($intervento)) {
+	    $intervento = $this->creaNuovoIntervento();	
+	}
 
-	$mezzo = new Mezzo();
-	$mezzo->setTarga("CRI67890");
-	$mezzo->setCodice("PD351567");
-	$mezzo->setSigla("R18");
-	$mezzo->setAltro("");
-        $entityManager->persist($mezzo);
-	$entityManager->flush();
+	$form = $this->createFormBuilder();
+	$form = $form->add('mezzo', ChoiceType::class, array(
+	  'expanded' => false,
+	  'multiple' => false,
+	  'choices' => $this->getListaMezziAsDescId(),
+          'data' => $intervento->getIdMezzo(),
+	));
+	$form = $form->add('kmPartenza', IntegerType::class, array(
+          'data' => $intervento->getKmPartenza(),
+	));
+	$form = $form->add('kmArrivo', IntegerType::class, array(
+          'data' => $intervento->getKmArrivo(),
+	  'required'    => false,
+	));
+	$form = $form->add('numeroTurno', IntegerType::class, array(
+          'data' => $intervento->getNumeroTurno(),
+	));
+	$form = $form->add('numeroIntervento', IntegerType::class, array(
+          'data' => $intervento->getNumeroIntervento(),
+	));
+	$form = $form->add('numeroInterventoBis', TextType::class, array(
+          'data' => $intervento->getNumeroInterventoBis(),
+	  'required'    => false,
+	));
+	$form = $form->add('tipoServizio', TextType::class, array(
+          'data' => $intervento->getTipoServizio(),
+	));
 
-	$persona = new Persona();
-	$mezzo = new Mezzo();
-	$persona->setNome("Giorgio");
-	$persona->setCognome("Gini");
-	$persona->setCodiceFiscale("GNIGRG");
-	$persona->setCodiceCRI("TACRI1");
-	$persona->setAltro("");
-        $entityManager->persist($persona);
-	$entityManager->flush();
+// idPersonaABCTLista
+        // persone 
+	$listaPersoneAsDescId = $this->getListaPersoneAsDescId();
+	for ($i=0; $i<4; $i++) {
+	    $form = $form->add('persona' . $i, ChoiceType::class, array_merge(array(
+	      'expanded' => false,
+	      'multiple' => false,
+	      'choices' => $listaPersoneAsDescId,
+              ), empty($intervento->getIdPersonaABCTLista())?[]:
+                array('data' => $intervento->getIdPersonaABCTLista()[$i][0]))
+	    );
 
-	$persona = new Persona();
-	$mezzo = new Mezzo();
-	$persona->setNome("Pino");
-	$persona->setCognome("Paoli");
-	$persona->setCodiceFiscale("PNIPLI");
-	$persona->setCodiceCRI("TACRI2");
-	$persona->setAltro("");
-        $entityManager->persist($persona);
-	$entityManager->flush();
+	    $form = $form->add('autista' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($intervento->getIdPersonaABCTLista())?false:$intervento->getIdPersonaABCTLista()[$i][1],
+	       	  'required'    => false));
+	    $form = $form->add('blsd' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($intervento->getIdPersonaABCTLista())?false:$intervento->getIdPersonaABCTLista()[$i][2],
+	    	  'required'    => false));
+	    $form = $form->add('capoequipaggio' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($intervento->getIdPersonaABCTLista())?false:$intervento->getIdPersonaABCTLista()[$i][3],
+	    	  'required'    => false));
+	    $form = $form->add('tirocinante' . $i, CheckboxType::class, array(
+	    	  'data'        => empty($intervento->getIdPersonaABCTLista())?false:$intervento->getIdPersonaABCTLista()[$i][4],
+	    	  'required'    => false));
+
+	}
+
+// idPersonaABCTLista
+
+	$form = $form->add('indirizzoInterventoVia', TextType::class, array(
+          'data' => $intervento->getIndirizzoInterventoVia(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('indirizzoInterventoComune', TextType::class, array(
+          'data' => $intervento->getIndirizzoInterventoComune(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('codiceUscita', IntegerType::class, array(
+          'data' => $intervento->getCodiceUscita(),
+	  'required'    => false,
+	));
+
+        // dateLista
+
+//echo("<pre>"); var_dump($intervento->getDateLista()); exit;
+
+	for ($i=0; $i<6; $i++) {
+	    $form = $form->add('data' . $i, DateTimeType::class, array(
+	    	  'data'        => empty($intervento->getDateLista())?null:(new \DateTime($intervento->getDateLista()[$i]["date"], new \DateTimeZone('Europe/Rome'))),
+		  'input'       => 'datetime',
+	    	  'required'    => false));
+	}
+
+	$form = $form->add('codiceTrasporto', IntegerType::class, array(
+          'data' => $intervento->getCodiceTrasporto(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('psDestinazione', TextType::class, array(
+          'data' => $intervento->getPsDestinazione(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('isAnonimoPaziente', CheckboxType::class, array(
+          'data' => $intervento->getIsAnonimoPaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('cognomePaziente', TextType::class, array(
+          'data' => $intervento->getCognomePaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('nomePaziente', TextType::class, array(
+          'data' => $intervento->getNomePaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('codiceFiscalePaziente', TextType::class, array(
+          'data' => $intervento->getCodiceFiscalePaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('sessoPaziente', TextType::class, array(
+          'data' => $intervento->getSessoPaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('dataNascitaPaziente', TextType::class, array(
+          'data' => $intervento->getDataNascitaPaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('indirizzoViaPaziente', TextType::class, array(
+          'data' => $intervento->getIndirizzoViaPaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('indirizzoComunePaziente', TextType::class, array(
+          'data' => $intervento->getIndirizzoComunePaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('nazionalitaPaziente', TextType::class, array(
+          'data' => $intervento->getNazionalitaPaziente(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('isCompletato', CheckboxType::class, array(
+          'data' => $intervento->getIsCompletato(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('isStampato', CheckboxType::class, array(
+          'data' => $intervento->getIsStampato(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('note', TextType::class, array(
+          'data' => $intervento->getNote(),
+	  'required'    => false,
+	));
+
+	$form = $form->add('save', SubmitType::class, array('label' => 'SALVA'));
+	$form = $form->getForm();
+	$form->handleRequest($request);
+
+	if ($form->isSubmitted() && $form->isValid()) {
+	    $data = $form->getData();
+	    $intervento->setIdMezzo($data['mezzo']);
+	    $intervento->setKmPartenza($data['kmPartenza']);
+	    $intervento->setKmArrivo($data['kmArrivo']);
+	    $intervento->setNumeroTurno($data['numeroTurno']);
+	    $intervento->setNumeroIntervento($data['numeroIntervento']);
+	    $intervento->setNumeroInterventoBis($data['numeroInterventoBis']);
+	    $intervento->setTipoServizio($data['tipoServizio']);
+	    $intervento->setIndirizzoInterventoVia($data['indirizzoInterventoVia']);
+	    $intervento->setIndirizzoInterventoComune($data['indirizzoInterventoComune']);
+	    $intervento->setCodiceUscita($data['codiceUscita']);
+
+	    // dateLista
+	    $intervento->setDateLista([$data['data0'], $data['data1'], $data['data2'], 
+	                               $data['data3'], $data['data4'], $data['data5'] ]);
+
+	    $intervento->setCodiceTrasporto($data['codiceTrasporto']);
+	    $intervento->setPsDestinazione($data['psDestinazione']);
+
+	    $intervento->setIdPersonaABCTLista([
+	      [$data['persona0'], $data['autista0'], $data['blsd0'], $data['capoequipaggio0'], $data['tirocinante0']],
+	      [$data['persona1'], $data['autista1'], $data['blsd1'], $data['capoequipaggio1'], $data['tirocinante1']],
+	      [$data['persona2'], $data['autista2'], $data['blsd2'], $data['capoequipaggio2'], $data['tirocinante2']],
+	      [$data['persona3'], $data['autista3'], $data['blsd3'], $data['capoequipaggio3'], $data['tirocinante3']],
+	    ]);
 
 
-        return $this->render('default/index.html.twig', [ 'name' => "Creati!" ]);
+	    $intervento->setIsAnonimoPaziente($data['isAnonimoPaziente']);
+	    $intervento->setCognomePaziente($data['cognomePaziente']);
+	    $intervento->setNomePaziente($data['nomePaziente']);
+	    $intervento->setCodiceFiscalePaziente($data['codiceFiscalePaziente']);
+	    $intervento->setSessoPaziente($data['sessoPaziente']);
+	    $intervento->setDataNascitaPaziente($data['dataNascitaPaziente']);
+	    $intervento->setIndirizzoViaPaziente($data['indirizzoViaPaziente']);
+	    $intervento->setIndirizzoComunePaziente($data['indirizzoComunePaziente']);
+	    $intervento->setNazionalitaPaziente($data['nazionalitaPaziente']);
+	    $intervento->setIsCompletato($data['isCompletato']);
+	    $intervento->setIsStampato($data['isStampato']);
+	    $intervento->setNote($data['note']);
+	    $em = $this->getDoctrine()->getManager();
+	    $em->persist($intervento);
+	    $em->flush();
+
+	    return $this->redirectToRoute('homepage');
+	}
+        return $this->render('default/modificaIntervento.html.twig', array(
+            'form' => $form->createView(),
+	    'intervento' => $intervento,
+	    ));
     }
 
 
     /**
-      * @Route("/hello/{name}")
+      * @Route("/archivia/intervento/{id}", name="archiviaintervento")
       */
-    public function hello($name, LoggerInterface $logger)
+    public function archiviaIntervento(Request $request, LoggerInterface $logger, $id)
     {
-        $logger->info("Saying hello to $name!");
-        return $this->render('default/index.html.twig', [
-            'name' => $name,
-        ]);
+        $logger->info("archivia intervento");
+        $item = $this->getDoctrine()
+            ->getRepository(Intervento::class)
+            ->find($id);
+	if (is_null($item)) {
+	    return $this->redirectToRoute('homepage');
+	} 
+	$item->setIsCompletato(true);
+	$em = $this->getDoctrine()->getManager();
+	$em->persist($item);
+	$em->flush();
+	return $this->redirectToRoute('homepage');
+    }
+
+
+    /**
+      * @Route("/cancella/intervento/{id}", name="cancellaintervento")
+      */
+    public function cancellaIntervento(Request $request, LoggerInterface $logger, $id=null)
+    {
+        $logger->info("cancella intervento");
+        $item = $this->getDoctrine()
+                ->getRepository(Intervento::class)
+                ->find($id);
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($item);
+        $em->flush();
+        return $this->redirectToRoute('homepage');
     }
 
 

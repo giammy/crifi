@@ -26,6 +26,16 @@ class Intervento
     /**
      * @ORM\Column(type="integer")
      */
+    private $kmPartenza;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $kmArrivo;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $numeroTurno;
 
     /**
@@ -34,64 +44,9 @@ class Intervento
     private $numeroIntervento;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $idPersona1;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isAutista1;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isCapoEquipaggio1;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $isPersona2;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isAutista2;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isCapoEquipaggio2;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $idPersona3;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isAutista3;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isCapoEquipaggio3;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $idPersona4;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isAutista4;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isCapoEquipaggio4;
+    private $numeroInterventoBis;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -99,49 +54,30 @@ class Intervento
     private $tipoServizio;
 
     /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
+     * @ORM\Column(type="json")
      */
-    private $IndirizzoInterventoVia;
+    private $idPersonaABCTLista = [];
 
     /**
      * @ORM\Column(type="string", length=1024, nullable=true)
      */
-    private $IndirizzoInterventoComune;
+    private $indirizzoInterventoVia;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=1024, nullable=true)
+     */
+    private $indirizzoInterventoComune;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $codiceUscita;
 
     /**
-     * @ORM\Column(type="datetimetz", nullable=true)
+     * @ORM\Column(type="json")
      */
-    private $data1;
+    private $dateLista = [];
 
-    /**
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
-    private $data2;
-
-    /**
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
-    private $data3;
-
-    /**
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
-    private $data4;
-
-    /**
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
-    private $data5;
-
-    /**
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
-    private $data6;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -154,6 +90,11 @@ class Intervento
     private $psDestinazione;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAnonimoPaziente;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $cognomePaziente;
@@ -164,29 +105,50 @@ class Intervento
     private $nomePaziente;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $codiceFiscalePaziente;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sessoPaziente;
+
+
+    /**
      * @ORM\Column(type="datetimetz", nullable=true)
      */
-    private $dataNascita;
+    private $dataNascitaPaziente;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $indirizzoPazienteVia;
+    private $indirizzoViaPaziente;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $indirizzoPazienteComune;
+    private $indirizzoComunePaziente;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nazionalita;
+    private $nazionalitaPaziente;
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $isCompletato;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isStampato;
+
+    /**
+     * @ORM\Column(type="string", length=1024, nullable=true)
+     */
+    private $note;
 
     public function getId(): ?int
     {
@@ -201,6 +163,30 @@ class Intervento
     public function setIdMezzo(int $idMezzo): self
     {
         $this->idMezzo = $idMezzo;
+
+        return $this;
+    }
+
+    public function getKmPartenza(): ?int
+    {
+        return $this->kmPartenza;
+    }
+
+    public function setKmPartenza(int $kmPartenza): self
+    {
+        $this->kmPartenza = $kmPartenza;
+
+        return $this;
+    }
+
+    public function getKmArrivo(): ?int
+    {
+        return $this->kmArrivo;
+    }
+
+    public function setKmArrivo(?int $kmArrivo): self
+    {
+        $this->kmArrivo = $kmArrivo;
 
         return $this;
     }
@@ -229,146 +215,14 @@ class Intervento
         return $this;
     }
 
-    public function getIdPersona1(): ?int
+    public function getNumeroInterventoBis(): ?string
     {
-        return $this->idPersona1;
+        return $this->numeroInterventoBis;
     }
 
-    public function setIdPersona1(int $idPersona1): self
+    public function setNumeroInterventoBis(?string $numeroInterventoBis): self
     {
-        $this->idPersona1 = $idPersona1;
-
-        return $this;
-    }
-
-    public function getIsAutista1(): ?bool
-    {
-        return $this->isAutista1;
-    }
-
-    public function setIsAutista1(bool $isAutista1): self
-    {
-        $this->isAutista1 = $isAutista1;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio1(): ?bool
-    {
-        return $this->isCapoEquipaggio1;
-    }
-
-    public function setIsCapoEquipaggio1(bool $isCapoEquipaggio1): self
-    {
-        $this->isCapoEquipaggio1 = $isCapoEquipaggio1;
-
-        return $this;
-    }
-
-    public function getIsPersona2(): ?int
-    {
-        return $this->isPersona2;
-    }
-
-    public function setIsPersona2(int $isPersona2): self
-    {
-        $this->isPersona2 = $isPersona2;
-
-        return $this;
-    }
-
-    public function getIsAutista2(): ?bool
-    {
-        return $this->isAutista2;
-    }
-
-    public function setIsAutista2(bool $isAutista2): self
-    {
-        $this->isAutista2 = $isAutista2;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio2(): ?bool
-    {
-        return $this->isCapoEquipaggio2;
-    }
-
-    public function setIsCapoEquipaggio2(bool $isCapoEquipaggio2): self
-    {
-        $this->isCapoEquipaggio2 = $isCapoEquipaggio2;
-
-        return $this;
-    }
-
-    public function getIdPersona3(): ?int
-    {
-        return $this->idPersona3;
-    }
-
-    public function setIdPersona3(int $idPersona3): self
-    {
-        $this->idPersona3 = $idPersona3;
-
-        return $this;
-    }
-
-    public function getIsAutista3(): ?bool
-    {
-        return $this->isAutista3;
-    }
-
-    public function setIsAutista3(bool $isAutista3): self
-    {
-        $this->isAutista3 = $isAutista3;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio3(): ?bool
-    {
-        return $this->isCapoEquipaggio3;
-    }
-
-    public function setIsCapoEquipaggio3(bool $isCapoEquipaggio3): self
-    {
-        $this->isCapoEquipaggio3 = $isCapoEquipaggio3;
-
-        return $this;
-    }
-
-    public function getIdPersona4(): ?int
-    {
-        return $this->idPersona4;
-    }
-
-    public function setIdPersona4(?int $idPersona4): self
-    {
-        $this->idPersona4 = $idPersona4;
-
-        return $this;
-    }
-
-    public function getIsAutista4(): ?bool
-    {
-        return $this->isAutista4;
-    }
-
-    public function setIsAutista4(?bool $isAutista4): self
-    {
-        $this->isAutista4 = $isAutista4;
-
-        return $this;
-    }
-
-    public function getIsCapoEquipaggio4(): ?bool
-    {
-        return $this->isCapoEquipaggio4;
-    }
-
-    public function setIsCapoEquipaggio4(?bool $isCapoEquipaggio4): self
-    {
-        $this->isCapoEquipaggio4 = $isCapoEquipaggio4;
+        $this->numeroInterventoBis = $numeroInterventoBis;
 
         return $this;
     }
@@ -385,26 +239,38 @@ class Intervento
         return $this;
     }
 
+    public function getIdPersonaABCTLista(): ?array
+    {
+        return $this->idPersonaABCTLista;
+    }
+
+    public function setIdPersonaABCTLista(array $idPersonaABCTLista): self
+    {
+        $this->idPersonaABCTLista = $idPersonaABCTLista;
+
+        return $this;
+    }
+
     public function getIndirizzoInterventoVia(): ?string
     {
-        return $this->IndirizzoInterventoVia;
+        return $this->indirizzoInterventoVia;
     }
 
     public function setIndirizzoInterventoVia(?string $IndirizzoInterventoVia): self
     {
-        $this->IndirizzoInterventoVia = $IndirizzoInterventoVia;
+        $this->indirizzoInterventoVia = $IndirizzoInterventoVia;
 
         return $this;
     }
 
     public function getIndirizzoInterventoComune(): ?string
     {
-        return $this->IndirizzoInterventoComune;
+        return $this->indirizzoInterventoComune;
     }
 
     public function setIndirizzoInterventoComune(?string $IndirizzoInterventoComune): self
     {
-        $this->IndirizzoInterventoComune = $IndirizzoInterventoComune;
+        $this->indirizzoInterventoComune = $IndirizzoInterventoComune;
 
         return $this;
     }
@@ -414,81 +280,21 @@ class Intervento
         return $this->codiceUscita;
     }
 
-    public function setCodiceUscita(int $codiceUscita): self
+    public function setCodiceUscita(?int $codiceUscita): self
     {
         $this->codiceUscita = $codiceUscita;
 
         return $this;
     }
 
-    public function getData1(): ?\DateTimeInterface
+    public function getDateLista(): ?array
     {
-        return $this->data1;
+        return $this->dateLista;
     }
 
-    public function setData1(?\DateTimeInterface $data1): self
+    public function setDateLista(array $dateLista): self
     {
-        $this->data1 = $data1;
-
-        return $this;
-    }
-
-    public function getData2(): ?\DateTimeInterface
-    {
-        return $this->data2;
-    }
-
-    public function setData2(?\DateTimeInterface $data2): self
-    {
-        $this->data2 = $data2;
-
-        return $this;
-    }
-
-    public function getData3(): ?\DateTimeInterface
-    {
-        return $this->data3;
-    }
-
-    public function setData3(?\DateTimeInterface $data3): self
-    {
-        $this->data3 = $data3;
-
-        return $this;
-    }
-
-    public function getData4(): ?\DateTimeInterface
-    {
-        return $this->data4;
-    }
-
-    public function setData4(?\DateTimeInterface $data4): self
-    {
-        $this->data4 = $data4;
-
-        return $this;
-    }
-
-    public function getData5(): ?\DateTimeInterface
-    {
-        return $this->data5;
-    }
-
-    public function setData5(?\DateTimeInterface $data5): self
-    {
-        $this->data5 = $data5;
-
-        return $this;
-    }
-
-    public function getData6(): ?\DateTimeInterface
-    {
-        return $this->data6;
-    }
-
-    public function setData6(?\DateTimeInterface $data6): self
-    {
-        $this->data6 = $data6;
+        $this->dateLista = $dateLista;
 
         return $this;
     }
@@ -517,6 +323,18 @@ class Intervento
         return $this;
     }
 
+    public function getIsAnonimoPaziente(): ?bool
+    {
+        return $this->isAnonimoPaziente;
+    }
+
+    public function setIsAnonimoPaziente(bool $isAnonimoPaziente): self
+    {
+        $this->isAnonimoPaziente = $isAnonimoPaziente;
+
+        return $this;
+    }
+
     public function getCognomePaziente(): ?string
     {
         return $this->cognomePaziente;
@@ -541,50 +359,74 @@ class Intervento
         return $this;
     }
 
-    public function getDataNascita(): ?\DateTimeInterface
+    public function getCodiceFiscalePaziente(): ?string
     {
-        return $this->dataNascita;
+        return $this->codiceFiscalePaziente;
     }
 
-    public function setDataNascita(?\DateTimeInterface $dataNascita): self
+    public function setCodiceFiscalePaziente(?string $codiceFiscalePaziente): self
     {
-        $this->dataNascita = $dataNascita;
+        $this->codiceFiscalePaziente = $codiceFiscalePaziente;
 
         return $this;
     }
 
-    public function getIndirizzoPazienteVia(): ?string
+    public function getSessoPaziente(): ?string
     {
-        return $this->indirizzoPazienteVia;
+        return $this->sessoPaziente;
     }
 
-    public function setIndirizzoPazienteVia(?string $indirizzoPazienteVia): self
+    public function setSessoPaziente(?string $sessoPaziente): self
     {
-        $this->indirizzoPazienteVia = $indirizzoPazienteVia;
+        $this->sessoPaziente = $sessoPaziente;
 
         return $this;
     }
 
-    public function getIndirizzoPazienteComune(): ?string
+    public function getDataNascitaPaziente(): ?\DateTimeInterface
     {
-        return $this->indirizzoPazienteComune;
+        return $this->dataNascitaPaziente;
     }
 
-    public function setIndirizzoPazienteComune(?string $indirizzoPazienteComune): self
+    public function setDataNascitaPaziente(?\DateTimeInterface $dataNascitaPaziente): self
     {
-        $this->indirizzoPazienteComune = $indirizzoPazienteComune;
+        $this->dataNascitaPaziente = $dataNascitaPaziente;
 
         return $this;
     }
 
-    public function getNazionalita(): ?string
+    public function getIndirizzoViaPaziente(): ?string
     {
-        return $this->nazionalita;
+        return $this->indirizzoViaPaziente;
     }
 
-    public function setNazionalita(?string $nazionalita): self
+    public function setIndirizzoViaPaziente(?string $indirizzoViaPaziente): self
     {
-        $this->nazionalita = $nazionalita;
+        $this->indirizzoViaPaziente = $indirizzoViaPaziente;
+
+        return $this;
+    }
+
+    public function getIndirizzoComunePaziente(): ?string
+    {
+        return $this->indirizzoComunePaziente;
+    }
+
+    public function setIndirizzoComunePaziente(?string $indirizzoComunePaziente): self
+    {
+        $this->indirizzoComunePaziente = $indirizzoComunePaziente;
+
+        return $this;
+    }
+
+    public function getNazionalitaPaziente(): ?string
+    {
+        return $this->nazionalitaPaziente;
+    }
+
+    public function setNazionalitaPaziente(?string $nazionalitaPaziente): self
+    {
+        $this->nazionalitaPaziente = $nazionalitaPaziente;
 
         return $this;
     }
@@ -600,4 +442,29 @@ class Intervento
 
         return $this;
     }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getIsStampato(): ?bool
+    {
+        return $this->isStampato;
+    }
+
+    public function setIsStampato(bool $isStampato): self
+    {
+        $this->isStampato = $isStampato;
+
+        return $this;
+    }
+
 }

@@ -1,0 +1,371 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# {{ form_widget(form) }} #}
+
+{{ form_start(form) }}
+<h2>
+<table>
+
+  <tr>
+    <td>{{ form_label(form.mezzo) }}</td>
+    <td>{{ form_errors(form.mezzo) }}</td>
+    <td>{{ form_widget(form.mezzo) }}</td>
+    <td>{{ form_help(form.mezzo) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.kmPartenza) }}</td>
+    <td>{{ form_errors(form.kmPartenza) }}</td>
+    <td>{{ form_widget(form.kmPartenza) }}</td>
+    <td>{{ form_help(form.kmPartenza) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.kmArrivo) }}</td>
+    <td>{{ form_errors(form.kmArrivo) }}</td>
+    <td>{{ form_widget(form.kmArrivo) }}</td>
+    <td>{{ form_help(form.kmArrivo) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.numeroTurno) }}</td>
+    <td>{{ form_errors(form.numeroTurno) }}</td>
+    <td>{{ form_widget(form.numeroTurno) }}</td>
+    <td>{{ form_help(form.numeroTurno) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.numeroIntervento) }}</td>
+    <td>{{ form_errors(form.numeroIntervento) }}</td>
+    <td>{{ form_widget(form.numeroIntervento) }}</td>
+    <td>{{ form_help(form.numeroIntervento) }}</td>
+  </tr>
+
+
+  <tr>
+    <td>{{ form_label(form.numeroInterventoBis) }}</td>
+    <td>{{ form_errors(form.numeroInterventoBis) }}</td>
+    <td>{{ form_widget(form.numeroInterventoBis) }}</td>
+    <td>{{ form_help(form.numeroInterventoBis) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.tipoServizio) }}</td>
+    <td>{{ form_errors(form.tipoServizio) }}</td>
+    <td>{{ form_widget(form.tipoServizio) }}</td>
+    <td>{{ form_help(form.tipoServizio) }}</td>
+  </tr>
+
+
+<!-- idPersonaABCTLista -->
+
+  <tr>
+    <td>{{ form_label(form.indirizzoInterventoVia) }}</td>
+    <td>{{ form_errors(form.indirizzoInterventoVia) }}</td>
+    <td>{{ form_widget(form.indirizzoInterventoVia) }}</td>
+    <td>{{ form_help(form.indirizzoInterventoVia) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.indirizzoInterventoComune) }}</td>
+    <td>{{ form_errors(form.indirizzoInterventoComune) }}</td>
+    <td>{{ form_widget(form.indirizzoInterventoComune) }}</td>
+    <td>{{ form_help(form.indirizzoInterventoComune) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.codiceUscita) }}</td>
+    <td>{{ form_errors(form.codiceUscita) }}</td>
+    <td>{{ form_widget(form.codiceUscita) }}</td>
+    <td>{{ form_help(form.codiceUscita) }}</td>
+  </tr>
+
+<!-- dateLista -->
+  <tr>
+    <td>{{ form_label(form.data0) }}</td>
+    <td>{{ form_errors(form.data0) }}</td>
+    <td>{{ form_widget(form.data0) }}</td>
+    <td>{{ form_help(form.data0) }}</td>
+  </tr>
+  <tr>
+    <td>{{ form_label(form.data1) }}</td>
+    <td>{{ form_errors(form.data1) }}</td>
+    <td>{{ form_widget(form.data1) }}</td>
+    <td>{{ form_help(form.data1) }}</td>
+  </tr>
+  <tr>
+    <td>{{ form_label(form.data2) }}</td>
+    <td>{{ form_errors(form.data2) }}</td>
+    <td>{{ form_widget(form.data2) }}</td>
+    <td>{{ form_help(form.data2) }}</td>
+  </tr>
+  <tr>
+    <td>{{ form_label(form.data3) }}</td>
+    <td>{{ form_errors(form.data3) }}</td>
+    <td>{{ form_widget(form.data3) }}</td>
+    <td>{{ form_help(form.data3) }}</td>
+  </tr>
+  <tr>
+    <td>{{ form_label(form.data4) }}</td>
+    <td>{{ form_errors(form.data4) }}</td>
+    <td>{{ form_widget(form.data4) }}</td>
+    <td>{{ form_help(form.data4) }}</td>
+  </tr>
+  <tr>
+    <td>{{ form_label(form.data5) }}</td>
+    <td>{{ form_errors(form.data5) }}</td>
+    <td>{{ form_widget(form.data5) }}</td>
+    <td>{{ form_help(form.data5) }}</td>
+  </tr>
+
+
+
+  <tr>
+    <td>{{ form_label(form.codiceTrasporto) }}</td>
+    <td>{{ form_errors(form.codiceTrasporto) }}</td>
+    <td>{{ form_widget(form.codiceTrasporto) }}</td>
+    <td>{{ form_help(form.codiceTrasporto) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.psDestinazione) }}</td>
+    <td>{{ form_errors(form.psDestinazione) }}</td>
+    <td>{{ form_widget(form.psDestinazione) }}</td>
+    <td>{{ form_help(form.psDestinazione) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.isAnonimoPaziente) }}</td>
+    <td>{{ form_errors(form.isAnonimoPaziente) }}</td>
+    <td>{{ form_widget(form.isAnonimoPaziente) }}</td>
+    <td>{{ form_help(form.isAnonimoPaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.cognomePaziente) }}</td>
+    <td>{{ form_errors(form.cognomePaziente) }}</td>
+    <td>{{ form_widget(form.cognomePaziente) }}</td>
+    <td>{{ form_help(form.cognomePaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.nomePaziente) }}</td>
+    <td>{{ form_errors(form.nomePaziente) }}</td>
+    <td>{{ form_widget(form.nomePaziente) }}</td>
+    <td>{{ form_help(form.nomePaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.codiceFiscalePaziente) }}</td>
+    <td>{{ form_errors(form.codiceFiscalePaziente) }}</td>
+    <td>{{ form_widget(form.codiceFiscalePaziente) }}</td>
+    <td>{{ form_help(form.codiceFiscalePaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.sessoPaziente) }}</td>
+    <td>{{ form_errors(form.sessoPaziente) }}</td>
+    <td>{{ form_widget(form.sessoPaziente) }}</td>
+    <td>{{ form_help(form.sessoPaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.dataNascitaPaziente) }}</td>
+    <td>{{ form_errors(form.dataNascitaPaziente) }}</td>
+    <td>{{ form_widget(form.dataNascitaPaziente) }}</td>
+    <td>{{ form_help(form.dataNascitaPaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.indirizzoViaPaziente) }}</td>
+    <td>{{ form_errors(form.indirizzoViaPaziente) }}</td>
+    <td>{{ form_widget(form.indirizzoViaPaziente) }}</td>
+    <td>{{ form_help(form.indirizzoViaPaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.indirizzoComunePaziente) }}</td>
+    <td>{{ form_errors(form.indirizzoComunePaziente) }}</td>
+    <td>{{ form_widget(form.indirizzoComunePaziente) }}</td>
+    <td>{{ form_help(form.indirizzoComunePaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.nazionalitaPaziente) }}</td>
+    <td>{{ form_errors(form.nazionalitaPaziente) }}</td>
+    <td>{{ form_widget(form.nazionalitaPaziente) }}</td>
+    <td>{{ form_help(form.nazionalitaPaziente) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.isCompletato) }}</td>
+    <td>{{ form_errors(form.isCompletato) }}</td>
+    <td>{{ form_widget(form.isCompletato) }}</td>
+    <td>{{ form_help(form.isCompletato) }}</td>
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.isStampato) }}</td>
+    <td>{{ form_errors(form.isStampato) }}</td>
+    <td>{{ form_widget(form.isStampato) }}</td>
+    <td>{{ form_help(form.isStampato) }}</td>
+  </tr>
+
+
+
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+
+    <td></td>
+    <td>Autista</td>
+    <td></td>
+
+    <td></td>
+    <td>Capoequipaggio</td>
+    <td></td>
+
+    <td></td>
+    <td>BLSD</td>
+    <td></td>
+
+    <td></td>
+    <td>Tirocinante</td>
+    <td></td>
+  </tr>
+
+
+  <tr>
+    <td>{{ form_label(form.persona0) }}</td>
+    <td>{{ form_errors(form.persona0) }}</td>
+    <td>{{ form_widget(form.persona0) }}</td>
+    <td>{{ form_help(form.persona0) }}</td>
+
+
+    <td>{{ form_errors(form.autista0) }}</td>
+    <td><center>{{ form_widget(form.autista0) }}</center></td>
+    <td>{{ form_help(form.autista0) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio0) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio0) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio0) }}</td>
+
+
+    <td>{{ form_errors(form.blsd0) }}</td>
+    <td><center>{{ form_widget(form.blsd0) }}</center></td>
+    <td>{{ form_help(form.blsd0) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante0) }}</td>
+    <td><center>{{ form_widget(form.tirocinante0) }}</center></td>
+    <td>{{ form_help(form.tirocinante0) }}</td>
+
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.persona1) }}</td>
+    <td>{{ form_errors(form.persona1) }}</td>
+    <td>{{ form_widget(form.persona1) }}</td>
+    <td>{{ form_help(form.persona1) }}</td>
+
+
+    <td>{{ form_errors(form.autista1) }}</td>
+    <td><center>{{ form_widget(form.autista1) }}</center></td>
+    <td>{{ form_help(form.autista1) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio1) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio1) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio1) }}</td>
+
+
+    <td>{{ form_errors(form.blsd1) }}</td>
+    <td><center>{{ form_widget(form.blsd1) }}</center></td>
+    <td>{{ form_help(form.blsd1) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante1) }}</td>
+    <td><center>{{ form_widget(form.tirocinante1) }}</center></td>
+    <td>{{ form_help(form.tirocinante1) }}</td>
+
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.persona2) }}</td>
+    <td>{{ form_errors(form.persona2) }}</td>
+    <td>{{ form_widget(form.persona2) }}</td>
+    <td>{{ form_help(form.persona2) }}</td>
+
+
+    <td>{{ form_errors(form.autista2) }}</td>
+    <td><center>{{ form_widget(form.autista2) }}</center></td>
+    <td>{{ form_help(form.autista2) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio2) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio2) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio2) }}</td>
+
+
+    <td>{{ form_errors(form.blsd2) }}</td>
+    <td><center>{{ form_widget(form.blsd2) }}</center></td>
+    <td>{{ form_help(form.blsd2) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante2) }}</td>
+    <td><center>{{ form_widget(form.tirocinante2) }}</center></td>
+    <td>{{ form_help(form.tirocinante2) }}</td>
+
+  </tr>
+
+  <tr>
+    <td>{{ form_label(form.persona3) }}</td>
+    <td>{{ form_errors(form.persona3) }}</td>
+    <td>{{ form_widget(form.persona3) }}</td>
+    <td>{{ form_help(form.persona3) }}</td>
+
+
+    <td>{{ form_errors(form.autista3) }}</td>
+    <td><center>{{ form_widget(form.autista3) }}</center></td>
+    <td>{{ form_help(form.autista3) }}</td>
+
+
+    <td>{{ form_errors(form.capoequipaggio3) }}</td>
+    <td><center>{{ form_widget(form.capoequipaggio3) }}</center></td>
+    <td>{{ form_help(form.capoequipaggio3) }}</td>
+
+
+    <td>{{ form_errors(form.blsd3) }}</td>
+    <td><center>{{ form_widget(form.blsd3) }}</center></td>
+    <td>{{ form_help(form.blsd3) }}</td>
+
+
+    <td>{{ form_errors(form.tirocinante3) }}</td>
+    <td><center>{{ form_widget(form.tirocinante3) }}</center></td>
+    <td>{{ form_help(form.tirocinante3) }}</td>
+
+  </tr>
+
+
+
+
+
+  <tr>
+    <td>{{ form_label(form.note) }}</td>
+    <td>{{ form_errors(form.note) }}</td>
+    <td>{{ form_widget(form.note) }}</td>
+    <td>{{ form_help(form.note) }}</td>
+  </tr>
+
+
+</h2>
+</table>
+
+{{ form_end(form) }}
+
+{% endblock %}

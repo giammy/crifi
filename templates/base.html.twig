@@ -27,6 +27,18 @@
       } ); // end ready function
       // END initialization and configuration
 
+      $(document).ready( function () {
+          $('#btable').dataTable( {
+              "fixedHeader": true,
+              "lengthMenu": [ 200, 100, 75, 50, 25, 10 ]
+              //"info":     false, // remove header and footer 
+              //"ordering": false, 
+              //"bPaginate": false,
+              //"sDom": 'T<"clear">lfrtip'
+      	} ); // end dataTable
+      } ); // end ready function
+      // END initialization and configuration
+
     </script>
 
   </head>

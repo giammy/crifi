@@ -6,11 +6,11 @@
   <tr>
     <td width="20%">
       <center>
-        <a href="{{ path('homepage') }}">
+        <a href="{{ path('modificaintervento') }}">
           <img src="{{ asset('assets/images/icon-nuovo-intervento.svg') }}" 
 	       alt="icon-nuovo-intervento" height="96" width="96"></a>
         <br>
-        <a href="{{ path('homepage') }}">Nuova Uscita</a>
+        <a href="{{ path('modificaintervento') }}">Nuova Uscita</a>
       </center>
     </td>
     <td width="20%">
@@ -110,10 +110,16 @@
 
 <center><h1>INTERVENTI IN CORSO</h1></center>
 
+{% embed "default/mostraInterventoCore.html.twig"  with {'lista': listaCorrenti, 'listaMezzi': listaMezziCorrenti, 'tag': 'btable' } %}
+{% endembed %}
+
 <hr>
 <hr>
 
 <center><h1>STORICO INTERVENTI</h1></center>
+
+{% embed "default/mostraInterventoCore.html.twig"  with {'lista': listaStorico, 'listaMezzi': listaMezziStorico, 'tag': 'atable' } %}
+{% endembed %}
 
 <hr>
 <hr>
