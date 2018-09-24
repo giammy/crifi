@@ -502,7 +502,7 @@ class DefaultController extends AbstractController
 	$intervento->setKmPartenza(is_null($inte)?1:$inte->getKmArrivo());
 
         // date
-	$intervento->setDateLista([new \DateTime('now'), null, null, null, null, null ]);
+	$intervento->setDateLista([null, null, null, null, null, null ]);
 
 	return $intervento;
     }
@@ -602,8 +602,17 @@ class DefaultController extends AbstractController
 //echo("<pre>"); var_dump($intervento->getDateLista()); exit;
 
 	for ($i=0; $i<6; $i++) {
+            $oldDate = null;
+	    if (!empty($intervento->getDateLista())) {
+	        if (!is_null($intervento->getDateLista()[$i])) {
+//echo("<pre>"); var_dump($intervento->getDateLista()[$i]); exit;
+	            $oldDate = new \DateTime($intervento->getDateLista()[$i]["date"], new \DateTimeZone('Europe/Rome'));
+                }
+            }
+//echo("<pre>"); var_dump($oldDate); exit;
+
 	    $form = $form->add('data' . $i, DateTimeType::class, array(
-	    	  'data'        => empty($intervento->getDateLista())?null:(new \DateTime($intervento->getDateLista()[$i]["date"], new \DateTimeZone('Europe/Rome'))),
+	    	  'data'        => $oldDate,
 		  'input'       => 'datetime',
 	    	  'required'    => false));
 	}
