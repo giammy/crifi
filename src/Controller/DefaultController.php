@@ -499,7 +499,7 @@ class DefaultController extends AbstractController
 	$intervento->setTipoServizio($equi->getTipo());
 	$intervento->setIdPersonaABCTLista($equi->getIdPersonaABCTLista());
 	$intervento->setNumeroIntervento(is_null($inte)?1:$inte->getNumeroIntervento() + 1);
-	$intervento->setKmPartenza(is_null($inte)?1:$inte->getKmArrivo());
+	$intervento->setKmPartenza(is_null($inte)?1:(is_null($inte->getKmArrivo())?1:$inte->getKmArrivo()));
 
         // date
 	$intervento->setDateLista([null, null, null, null, null, null ]);
